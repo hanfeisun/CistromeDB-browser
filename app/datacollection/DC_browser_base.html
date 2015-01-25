@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" ng-app="dcApp">
+<head>
+<title>Cistrome Data Browser</title>
+
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.11.0.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular.min.js"></script>
+<script src="{{ STATIC_URL }}main_controller.js"></script>
+<script src="{{ STATIC_URL }}main_services.js"></script>
+<script src="{{ STATIC_URL }}angular-block-ui.min.js"></script>
+<script src="{{ STATIC_URL }}angucomplete.js"></script>
+
+{% block js %}
+{% endblock %}
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}angular-block-ui.min.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}angucomplete.css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+{% block css %}
+{% endblock %}
+<style>
+body {
+    background-color: rgb(241, 242, 246);
+}
+.no-padding {
+    padding-right: 0px;
+    padding-left: 0px;
+
+}
+
+.tight-line {
+    margin: 0;
+}
+
+.margin-zero {
+    margin: 0
+}
+
+.button-list {
+    width: 100%;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.filter h2,
+.panel-heading h2 {
+    font-size: 1.2307em;
+    font-weight: bold;
+    line-height: 1.125;
+    padding: 3px;
+    margin: 0;
+    display: inline-block;
+    vertical-align:top
+}
+
+.filter label,
+#result-panel .panel-heading,
+#inspector-panel .panel-heading,
+#tools-panel .panel-heading
+
+{
+    background-color: #EFEFEF;
+    color: #434a54;
+    width: 100%;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.filter ul {
+    border: none;
+    border-top: 1px solid #97b0c8;
+    height: 8.5em;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.collection ul,
+.filter ul {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.collection li,
+.filter li {
+    display: block;
+    cursor: pointer;
+}
+
+.collection li.checked,
+.filter li.checked, tr.checked {
+    background-color: rgb(79, 193, 233);
+    color: #fff;
+
+}
+
+#dataset-table > tbody > tr.checked:hover > td {
+    background-color: #3BAFDA;
+}
+
+#dataset-table tbody td, tr {
+    margin: 0;
+    padding: 4px;
+}
+
+#dataset-table {
+    width: 100%;
+    margin-bottom: 5px;
+    border-bottom: 1px #d6d6d6 solid;
+
+}
+
+table tbody {
+    font-size: 1em;
+}
+
+#dataset-table tbody tr:hover td {
+    cursor: pointer;
+}
+
+div.filter {
+    float: left;
+    width: 100%;
+    margin-top: 25px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background-color: #FFF;
+    width: 100%;
+}
+
+
+div.filter h2 {
+    margin: 0;
+    padding: 0.2em;
+}
+
+.form-inline button.form-control {
+    display: block;
+    width: 100%;
+}
+
+#contain-word
+{
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+
+#around-gene, #mygene_genes_value
+{
+    width: 35em;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.inspector_attrib_row {
+    border-bottom: 1px #d6d6d6 solid;
+    border-right: 1px #d6d6d6 solid;
+}
+
+
+.page-number {
+    display: inline;
+    vertical-align: middle;
+
+}
+
+#result-panel {
+    margin-top: 20px;
+    padding-bottom: 3px;
+}
+
+
+{#.panel:hover, .filter:hover,  div.tool-content:hover {#}
+{#    box-shadow: 0px 0px 20px rgba(0,0,0, .2);#}
+{#}#}
+
+
+#result-panel:hover > .panel-heading,
+#inspector-panel:hover > .panel-heading,
+#tools-panel:hover > .panel-heading,
+.filter:hover > label {
+    background-color:   #D1D5D8;
+}
+
+
+.bs-docs-header {
+    margin-bottom: 40px;
+    font-size: 20px;
+}
+
+.bs-docs-header h1 {
+    margin-top: 0;
+    color: #fff;
+    text-align: left;
+}
+
+#navbar {
+    margin-bottom: 0;
+}
+
+.bs-docs-header p {
+    margin-bottom: 0;
+    font-weight: 300;
+    line-height: 1.4
+}
+
+.bs-docs-header .container {
+    position: relative
+}
+
+@media (min-width: 768px) {
+    .bs-docs-header {
+        padding-top: 60px;
+        padding-bottom: 60px;
+        font-size: 24px;
+        text-align: left
+    }
+
+    .bs-docs-header h1 {
+        font-size: 60px;
+        line-height: 1
+    }
+}
+
+@media (min-width: 992px) {
+    .bs-docs-header h1, .bs-docs-header p {
+        margin-right: 380px
+    }
+}
+
+.tool-content {
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+    background-color: #FFF;
+}
+
+.bs-docs-header {
+    position: relative;
+    padding: 30px 15px;
+    color: #cdbfe3;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+    background-color: #4FC1E9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#3BAFDA), to(#4FC1E9));
+    background-image: -webkit-linear-gradient(top, #3BAFDA 0, #4FC1E9 100%);
+    background-image: -o-linear-gradient(top, #3BAFDA 0, #4FC1E9 100%);
+    background-image: linear-gradient(to bottom, #3BAFDA 0, #4FC1E9 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3BAFDA', endColorstr='#4FC1E9', GradientType=0);
+    background-repeat: repeat-x;
+}
+
+.circle {
+    background: #A9A9A9;
+    height: 23px;
+    width: 23px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.green {
+    background-color: #27ae60;
+}
+
+.red {
+    background-color: #c0392b;
+}
+
+.grey {
+    background-color: #A9A9A9;
+}
+
+#qc-tables {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+.orange {
+    background-color: #ec971f;
+}
+
+#qc-circles {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.circle-col {
+    width: 12.5%;
+    position: relative;
+    float: left;
+
+}
+
+.row .inspector-sub {
+    margin-top: 10px;
+    margin-bottom: 1em;
+}
+
+div.greyBlock {
+    margin-top: 10px;
+    background-color:#eee;
+}
+
+div.btn-group {
+    width:100%;
+
+}
+.dropdown-menu {
+    width: 100%;
+}
+
+
+.tooltip-inner {
+    max-width: 350px;
+    /* If max-width does not work, try using width instead */
+    width: 200px;
+}
+
+
+#contain-word-div {
+    height: 34px;
+}
+
+#contain-word-lab {
+    bottom: 5px;
+    position: absolute;
+}
+
+#contain-word {
+    width: 100%;
+}
+
+#clear-all {
+    position: absolute;
+    right: 20px;
+    top: 0;
+    bottom: 0;
+    height: 14px;
+    margin: auto;
+    font-size: 14px;
+    cursor: pointer;
+    color: #ccc;
+}
+#filter_section > div {
+    -webkit-transition: all 500ms ease-in-out 0s;
+    -moz-transition: 	all 500ms ease-in-out 0s;
+    -o-transition: 		all 500ms ease-in-out 0s;
+    transition: 		all 500ms ease-in-out 0s;
+}
+
+.float-right {
+    float: right;
+}
+
+#current-page {
+    width: 100%;
+}
+
+.top-align {
+    vertical-align: top;
+}
+div.top-align{
+    display: inline-block;
+    padding-top: 7px;
+}
+
+.qc-reports-content-600px {
+    height: 600px;
+
+}
+</style>
+
+
+</head>
+<body ng-controller="filterController">
+<nav class="navbar" role="navigation" id="navbar">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://cistrome.org/db">Cistrome Data Browser</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="http://cistrome.org/dc/main">Home</a></li>
+                <li><a href="#about">About</a></li>
+
+            </ul>
+{% verbatim %}
+            <ul class="nav navbar-nav navbar-right">
+                <li><a ng-href="{{login_url}}"><span id="account-status" ng-bind="login_text"></span><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+            </ul>
+{% endverbatim %}
+        </div>
+    </div>
+</nav>
+
+{% block body %}
+{% endblock %}
+
+
+</body>
+</html>
