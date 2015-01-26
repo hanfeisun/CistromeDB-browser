@@ -1,25 +1,25 @@
-'use strict'
 
-###*
- # @ngdoc overview
- # @name dcApp
- # @description
- # # dcApp
- #
- # Main module of the application.
-###
-angular
-  .module('dcApp', [
-    'ngRoute'
-  ])
-  .config ($routeProvider) ->
-    $routeProvider
-      .when '/',
-        templateUrl: 'views/main.html'
-        controller: 'MainCtrl'
-      .when '/about',
-        templateUrl: 'views/about.html'
-        controller: 'AboutCtrl'
-      .otherwise
-        redirectTo: '/'
+dcApp = angular.module("dcApp", [
+  "dcApp.services"
+  "blockUI"
+  "angucomplete"
+  "ngToast"
+])
+
+.config (blockUIConfig) ->
+  blockUIConfig.autoBlock = false
+  return
+
+.config (
+  ['ngToastProvider'
+   (ngToast) ->
+     ngToast.configure
+       verticalPosition: 'bottom',
+       horizontalPosition: 'right'
+     return
+  ]
+)
+
+.constant("root", "http://cistrome.org")
+
 
