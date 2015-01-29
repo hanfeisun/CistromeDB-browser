@@ -10,6 +10,14 @@
 
 dcApp = angular.module("dcApp")
 
+dcApp.controller "ModalInstanceCtrl", ($scope, $modalInstance, modaldata) ->
+  $scope.modaldata = modaldata;
+
+  $scope.cancel = ->
+    $modalInstance.dismiss('cancel');
+  return
+
+
 dcApp.controller "filterController", [
   "$scope"
   "$sce"
@@ -21,7 +29,9 @@ dcApp.controller "filterController", [
   "blockUI"
   "similarService"
   "ngToast"
-  ($scope, $sce, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast) ->
+  "$modal"
+  "$log"
+  ($scope, $sce, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast, $modal, $log) ->
 
     filterSentData =
       species: "all"
@@ -113,10 +123,14 @@ dcApp.controller "filterController", [
         $scope.current_page = msg.request_page
         inspectorRowSelected = -1
         blockUI.stop()
+        $scope.showToast(1)
+
         return
       ).error ->
-        ngToast.create('A toast message')
+        blockUI.stop()
+        $scope.showToast(0)
         return
+      return
 
     checkLogin = ->
       loginService.request().success (msg, status) ->
@@ -228,22 +242,74 @@ dcApp.controller "filterController", [
       blockUI.start()
       similarService.request(id).success((msg, status) ->
         $scope.similars = msg
+        $scope.predicate = 'score' # sort
         blockUI.stop()
+        $scope.showToast(1)
         return
       ).error ->
         blockUI.stop()
+        $scope.showToast(0)
         return
 
+      return
+
+    $scope.open = (id, size)->
+      modalIns = $modal.open(
+        templateUrl: "dcModal.html"
+        controller: "ModalInstanceCtrl"
+        size: size
+        resolve:
+          modaldata: ->
+            return $scope.moaldata;
+      )
+#      modalIns.result.then();
+      return
+
+    $scope.setMoal = (id, size) ->
+      blockUI.start()
+      inspectorService.request(id).success((msg, status) ->
+        $scope.moaldata = msg
+        $scope.showToast 1
+        blockUI.stop()
+
+        $scope.open id, size
+        return
+      ).error ->
+        $scope.showToast 0
+        blockUI.stop()
+        return
+      return
+
+    $scope.showToast = (status) ->
+      content = [
+        'loading failure'
+        'loading successfully'
+      ]
+      TYPE = [
+        'warning'
+        'success'
+      ]
+      ngToast.create(
+        content: content[status]
+        class: TYPE[status]
+        dismissOnTimeout: true
+        #timeout: 800
+        dismissButton: true
+        dismissOnClick: true
+      )
       return
 
     $scope.setMotif = (id, gene) ->
       return  if id is $scope.id and not gene
       blockUI.start()
-      motifService.request(id, gene).success (data, status) ->
+      motifService.request(id, gene).success((data, status) ->
         $scope.motifs = data
         blockUI.stop()
+        $scope.showToast(1)
         return
-
+      ).error ->
+        blockUI.stop()
+        $scope.showToast(0)
       return
 
     $scope.setInspector = (id) ->
@@ -264,9 +330,12 @@ dcApp.controller "filterController", [
           $scope.toolHidden = false
           $("#toolTab a:first").tab "show"
           $scope.columnCnt = msg.qc.table.treat_number + msg.qc.table.control_number
+
+        $scope.showToast(1)
         blockUI.stop()
         return
       ).error ->
+        $scope.showToast(0)
         blockUI.stop()
         return
 
@@ -275,10 +344,8 @@ dcApp.controller "filterController", [
 
     initialize()
 ]
-dcApp.controller "qcController", [
-  "$scope"
-  ->
-]
+
+
 dcApp.directive "dcTooltip", ->
   (scope, element, attr) ->
     element.on "mouseover", (e) ->
@@ -319,7 +386,6 @@ dcApp.filter "datasetMeta", ->
   bioSourceFilter = (d) ->
     bioSource = []
     bioKeys = [
-      "factor__name"
       "cell_line__name"
       "cell_type__name"
       "cell_pop__name"
@@ -328,7 +394,7 @@ dcApp.filter "datasetMeta", ->
     ]
     i = 0
 
-    while i < bioKeys.length
+    while i < bioKeys.length - 1
       bioSource.push d[bioKeys[i]]  if d[bioKeys[i]]
       i++
     bioSource.join "; "

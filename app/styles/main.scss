@@ -72,11 +72,15 @@ body {
   cursor: pointer;
 }
 
-.collection li.checked,
-.filter li.checked, tr.checked {
+
+@mixin check {
   background-color: rgb(79, 193, 233);
   color: #fff;
+}
 
+.collection li.checked,
+.filter li.checked, tr.checked {
+  @include check;
 }
 
 #dataset-table > tbody > tr.checked:hover > td {
@@ -355,6 +359,60 @@ div.top-align{
 .qc-reports-content-600px {
   height: 600px;
 
+}
+
+@mixin left($value: 60%) {
+  vertical-align: middle;
+  text-align: center;
+  display: table-cell;
+  margin: 0 auto;
+  width: $value;
+}
+
+$wd: 70%;
+
+img.motifImg {
+  @include left($wd);
+
+}
+
+img.conserv {
+  @include left($wd);
+}
+
+.table > tbody > tr > td.conserv {
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.table > tbody > tr > td.motif {
+  width: 23%;
+  text-align:center;
+  display : table-cell;
+  vertical-align : middle;
+  float: none;
+  padding: 8px;
+
+}
+
+.table > thead.motif > tr > th {
+  text-align:center;
+  display : table-cell;
+}
+
+#similar tr.checked {
+  @include check;
+  &:hover {
+    background-color: #3BAFDA;
+    cursor: pointer;
+  }
+}
+
+#similar tr {
+  &:hover {
+    @include check;
+    cursor: pointer;
+  }
 }
 
 

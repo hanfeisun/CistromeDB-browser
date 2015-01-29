@@ -9,18 +9,41 @@
   <!-- build:css(.) styles/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/angular-block-ui/dist/angular-block-ui.css" />
-  <link rel="stylesheet" href="bower_components/ngtoast/dist/ngToast.css" />
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css(.tmp) styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="bower_components/ngtoast/dist/ngToast.css" />
 
   <!-- endbuild -->
 </head>
 <body ng-app="dcApp" ng-controller="filterController">
-<!--[if lt IE 7]>
-  <!--<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>-->
-<!--<![endif]&ndash;&gt;-->
+
+<script type="text/ng-template" id="dcModal.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Radar similar dataset</h3>
+  </div>
+  <div class="modal-body">
+    <b>Treatments</b>
+    <ul>
+      <li ng-repeat="treat in modaldata.treats"><a
+        ng-href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{treat.unique_id}}"
+        ng-bind="treat.name"></a></li>
+    </ul>
+    <b ng-class="{hidden: modaldata.conts.length==0}">Controls</b>
+    <ul ng-class="{hidden: modaldata.conts.length==0}">
+      <li ng-repeat="cont in modaldata.conts"><a
+        ng-href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{cont.unique_id}}"
+        ng-bind="cont.name"></a></li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
+</script>
+
+<toast></toast>
+
 
 <nav class="navbar" role="navigation" id="navbar">
   <div class="container">
@@ -282,7 +305,7 @@
     <div class="col-sm-12" ng-hide="toolHidden">
       <strong>Quality Control</strong>
     </div>
-    <div class="col-sm-12" id="qc-circles" ng-controller="qcController" ng-hide="toolHidden">
+    <div class="col-sm-12" id="qc-circles" ng-hide="toolHidden">
 
       <div class="circle-col">
         <div class="circle"
@@ -442,11 +465,11 @@
   <li><a href="#allTarget" id="target-trigger" ng-click="setTarget(inspector.id)" dc-tab>Get
     top putative targets</a></li>
   <li><a href="#peak" ng-click="targets=[]" dc-tab>Check a putative target</a></li>
-  <li><a href="#similar" ng-click="setSimilar(inspector.id)" dc-tab>Find similar datasets</a></li>
+  <li><a href="#similar" ng-click="setSimilar(inspector.id);" dc-tab>Find similar datasets</a></li>
 </ul>
 <div id="toolTabContent" class="tab-content">
 <div class="tab-pane fade in active" id="qc-reports">
-  <div class="tool-content" id="qc-reports-content" class="qc-reports-content-600px">
+  <div class="tool-content table-responsive" id="qc-reports-content" class="qc-reports-content-600px">
 
     <table class="table table-striped table-bordered" id="qc-tables">
       <thead>
@@ -506,24 +529,22 @@
             colspan="{{table.treat_number+table.control_number}}"></td>
       </tr>
       <tr>
-        <td> % Top 5k peaks Phastcon Conservation Profiles
+        <td class="conserv"> % Top 5k peaks Phastcon Conservation Profiles
         </td>
-        <td colspan="{{table.treat_number+table.control_number}}">
-          <img ng-src="http://cistrome.org/dc/conserv?id={{ inspector.id }}"> </img>
+        <td colspan="{{table.treat_number+table.control_number}}" class="conserv">
+          <img ng-src="http://cistrome.org/dc/conserv?id={{ inspector.id }}" class="img-rounded conserv"> </img>
         </td>
       </tr>
       </tbody>
       </thead>
-
-
     </table>
   </div>
 </div>
 <div class="tab-pane fade" id="qc-motif">
   <div class="row">
-    <div class="col-sm-12">
-      <table class="table">
-        <thead>
+    <div class="col-sm-12 table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead class="motif">
         <tr>
           <th>Gene</th>
           <th>Z Score</th>
@@ -533,10 +554,12 @@
         </thead>
         <tbody>
         <tr ng-repeat="motif in motifs">
-          <td ng-bind="motif.factors"></td>
-          <td ng-bind="motif.zscore | motifZscore"></td>
-          <td ng-bind="motif.hits"></td>
-          <td ng-bind="motif.id"></td>
+          <td ng-bind="motif.factors" class="motif"></td>
+          <td ng-bind="motif.zscore | motifZscore" class="motif"></td>
+          <td ng-bind="motif.hits" class="motif"></td>
+          <td>
+            <img ng-src="http://cistrome.org/db/motif_logo?id={{ inspector.id }}&logoid={{ motif.id }}" class="img-rounded motifImg"> </img>
+          </td>
         </tr>
         </tbody>
 
@@ -609,14 +632,21 @@
     <table class="table table-striped table-bordered table-condensed">
       <thead>
       <tr>
-        <th>Dataset</th>
+        <th>Species</th>
+        <th>Biological Source</th>
+        <th>Factor</th>
+        <th>Publication</th>
+        <!--<th>Status</th>-->
         <th>Score</th>
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="similar in similars">
-        <td ng-bind="similar[0] | datasetMeta"></td>
-        <td ng-bind="similar[1]"></td>
+      <tr ng-repeat="similar in similars | orderBy:predicate:true" ng-class="{checked: selectedInspectorRow() == similar.id}" ng-click="setMoal(similar.id, 'lg')">
+        <td ng-bind="similar['species__name']"></td>
+        <td ng-bind="similar | datasetMeta"></td>
+        <td ng-bind="similar['factor__name']"></td>
+        <td ng-bind="similar['paper__pub_summary']"></td>
+        <td ng-bind="similar['score']"></td>
       </tr>
       </tbody>
     </table>
@@ -688,6 +718,7 @@
 <script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/ngtoast/dist/ngToast.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 

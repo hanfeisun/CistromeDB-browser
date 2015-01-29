@@ -45,7 +45,6 @@ services.factory "inspectorService", [
           id: id
       )
 
-    console.log(1)
     return (
       request: (id) ->
         doRequest id
@@ -103,7 +102,6 @@ services.factory "similarService", [
         url: url
         params:
           id: id
-
 
     return request: (id) ->
       doRequest id
