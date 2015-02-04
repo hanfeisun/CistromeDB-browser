@@ -1,10 +1,7 @@
 dcApp = angular.module("dcApp")
 services = angular.module("dcApp.services", ["dcApp"])
 
-services.factory "filterService", [
-  "$http"
-  "root"
-  ($http, root) ->
+services.factory "filterService", ($http, root) ->
     filterSentData = undefined
     url = root + "/dc/main_filter_ng"
     doRequest = ->
@@ -22,12 +19,9 @@ services.factory "filterService", [
         filterSentData = newFilterSentData
         return
     )
-]
 
-services.factory "inspectorService", [
-  "$http"
-  "root"
-  ($http, root) ->
+
+services.factory "inspectorService", ($http, root) ->
     doRequest = (id) ->
       url = root + "/dc/inspector"
       $http
@@ -52,11 +46,9 @@ services.factory "inspectorService", [
       get: (id) ->
         getImg id
     )
-]
 
-services.factory "targetService", [
-  "$http"
-  "root"
+
+services.factory "targetService",
   ($http, root) ->
     doRequest = (id, gene) ->
       gene = ""  unless gene
@@ -71,12 +63,9 @@ services.factory "targetService", [
 
     return request: (id, gene) ->
       doRequest id, gene
-]
 
-services.factory "motifService", [
-  "$http"
-  "root"
-  ($http, root) ->
+
+services.factory "motifService", ($http, root) ->
     doRequest = (id, gene) ->
       gene = ""  unless gene
       url = root + "/dc/motif_ng"
@@ -90,11 +79,8 @@ services.factory "motifService", [
 
     return request: (id, gene) ->
       doRequest id, gene
-]
-services.factory "similarService", [
-  "$http"
-  "root"
-  ($http, root) ->
+
+services.factory "similarService", ($http, root) ->
     doRequest = (id) ->
       url = root + "/dc/similarity"
       $http
@@ -105,11 +91,8 @@ services.factory "similarService", [
 
     return request: (id) ->
       doRequest id
-]
-services.factory "loginService", [
-  "$http"
-  "root"
-  ($http, root) ->
+
+services.factory "loginService", ($http, root) ->
     doRequest = ->
       url = root + "/dc/accounts/check"
       $http
@@ -119,4 +102,4 @@ services.factory "loginService", [
 
     return request: ->
       doRequest()
-]
+

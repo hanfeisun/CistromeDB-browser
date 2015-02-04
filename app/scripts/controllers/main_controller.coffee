@@ -18,21 +18,8 @@ dcApp.controller "ModalInstanceCtrl", ($scope, $modalInstance, modaldata) ->
   return
 
 
-dcApp.controller "filterController", [
-  "$scope"
-  "$sce"
-  "filterService"
-  "inspectorService"
-  "targetService"
-  "motifService"
-  "loginService"
-  "blockUI"
-  "similarService"
-  "ngToast"
-  "$modal"
-  "$log"
-  ($scope, $sce, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast, $modal, $log) ->
-
+dcApp.controller "filterController",
+  ($scope, $sce, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast, $modal) ->
     filterSentData =
       species: "all"
       cellinfos: "all"
@@ -262,7 +249,7 @@ dcApp.controller "filterController", [
           modaldata: ->
             return $scope.moaldata;
       )
-#      modalIns.result.then();
+      #      modalIns.result.then();
       return
 
     $scope.setMoal = (id, size) ->
@@ -293,7 +280,7 @@ dcApp.controller "filterController", [
         content: content[status]
         class: TYPE[status]
         dismissOnTimeout: true
-        #timeout: 800
+      #timeout: 800
         dismissButton: true
         dismissOnClick: true
       )
@@ -343,7 +330,6 @@ dcApp.controller "filterController", [
       return
 
     initialize()
-]
 
 
 dcApp.directive "dcTooltip", ->
