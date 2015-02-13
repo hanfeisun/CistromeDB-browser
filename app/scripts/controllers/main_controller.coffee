@@ -110,7 +110,6 @@ dcApp.controller "filterController",
         $scope.current_page = msg.request_page
         inspectorRowSelected = -1
         blockUI.stop()
-        $scope.showToast(1)
 
         return
       ).error ->
@@ -231,7 +230,6 @@ dcApp.controller "filterController",
         $scope.similars = msg
         $scope.predicate = 'score' # sort
         blockUI.stop()
-        $scope.showToast(1)
         return
       ).error ->
         blockUI.stop()
@@ -256,7 +254,7 @@ dcApp.controller "filterController",
       blockUI.start()
       inspectorService.request(id).success((msg, status) ->
         $scope.moaldata = msg
-        $scope.showToast 1
+
         blockUI.stop()
 
         $scope.open id, size
@@ -292,7 +290,6 @@ dcApp.controller "filterController",
       motifService.request(id, gene).success((data, status) ->
         $scope.motifs = data
         blockUI.stop()
-        $scope.showToast(1)
         return
       ).error ->
         blockUI.stop()
@@ -318,7 +315,6 @@ dcApp.controller "filterController",
           $("#toolTab a:first").tab "show"
           $scope.columnCnt = msg.qc.table.treat_number + msg.qc.table.control_number
 
-        $scope.showToast(1)
         blockUI.stop()
         return
       ).error ->
