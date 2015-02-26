@@ -23,9 +23,11 @@
 
 <script type="text/ng-template" id="dcModal.html">
   <div class="modal-header">
-    <h3 class="modal-title">Radar similar dataset</h3>
+    <h3 class="modal-title">Find similar dataset</h3>
   </div>
-  <div class="modal-body">
+<div class="modal-body">
+  <div class="col-sm-8">
+    <div class="row inspector_attrib_row">
     <b>Treatments</b>
     <ul>
       <li ng-repeat="treat in modaldata.treats"><a
@@ -38,7 +40,206 @@
         ng-href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{cont.unique_id}}"
         ng-bind="cont.name"></a></li>
     </ul>
+    </div>
+
+    <div class="row inspector_attrib_row">
+        <div class="col-sm-3"><b>Species:</b>
+        </div>
+        <div class="col-sm-9 inspector_attrib_value" ng-bind="modaldata.treats[0].species__name"></div>
+    </div>
+
+    <div class="row inspector_attrib_row">
+        <div class="col-sm-3"><b>Citation:</b>
+        </div>
+        <div class="col-sm-9 inspector_attrib_value">
+            <div ng-bind="modaldata.treats[0].paper__reference"></div>
+            <span>PMID:</span>
+            <a ng-href="http://www.ncbi.nlm.nih.gov/pubmed/{{modaldata.treats[0].paper__pmid}}" ng-bind="modaldata.treats[0].paper__pmid"></a>
+        </div>
+    </div>
+    <div class="row inspector_attrib_row">
+        <div class="col-sm-3"><b>Factor:</b>
+        </div>
+        <div class="col-sm-9 inspector_attrib_value" ng-bind="modaldata.treats[0].factor__name"></div>
+    </div>
+    <div class="row inspector_attrib_row">
+        <div class="col-sm-3"><b>Biological Source:</b>
+        </div>
+        <div class="col-sm-9 inspector_attrib_value">
+            <p class="tight-line" ng-hide="!modaldata.treats[0].cell_line__name"><b>Cell
+        Line: </b><span ng-bind="modaldata.treats[0].cell_line__name"></span>
+            </p>
+
+            <p class="tight-line" ng-hide="!modaldata.treats[0].cell_type__name"><b>Cell
+        Type: </b><span ng-bind="modaldata.treats[0].cell_type__name"></span>
+            </p>
+
+            <p class="tight-line" ng-hide="!modaldata.treats[0].cell_pop__name"><b>Cell
+        Pop: </b><span ng-bind="modaldata.treats[0].cell_pop__name"></span>
+            </p>
+
+            <p class="tight-line" ng-hide="!modaldata.treats[0].strain__name"><b>Strain: </b><span ng-bind="modaldata.treats[0].strain__name"></span>
+            </p>
+
+            <p class="tight-line" ng-hide="!modaldata.treats[0].tissue_type__name">
+                <b>Tissue: </b><span ng-bind="modaldata.treats[0].tissue_type__name"></span>
+            </p>
+
+            <p class="tight-line" ng-hide="!modaldata.treats[0].disease_state__name"><b>Disease: </b><span ng-bind="modaldata.treats[0].disease_state__name"></span>
+            </p>
+        </div>
   </div>
+  </div>
+
+<div class="col-sm-4">
+  <div class="row inspector-sub">
+    <div class="col-sm-12">
+      <strong>Quality Control</strong>
+    </div>
+    <div class="col-sm-12" id="qc-circles">
+
+      <div class="circle-col">
+        <div class="circle"
+             ng-class="{green: 
+modaldata.qc.judge.fastqc, red: !
+modaldata.qc.judge.fastqc}"
+             data-toggle="tooltip" data-html="true" data-placement="auto"
+             title="<strong class='text-primary'>Sequence Quality:</strong><br> Raw sequence median quality score and raw read GC contents"
+             dc-tooltip></div>
+      </div>
+      <div class="circle-col">
+        <div class="circle"
+             ng-class="{green: 
+modaldata.qc.judge.map, red: !
+modaldata.qc.judge.map}"
+             data-toggle="tooltip" data-html="true" data-placement="auto"
+             title="<strong class='text-primary'>Mapping Quality:</strong><br> Uniquely mapped ratio"
+             dc-tooltip></div>
+      </div>
+
+      <div class="circle-col">
+        <div class="circle"
+             ng-class="{green: 
+modaldata.qc.judge.pbc, red: !
+modaldata.qc.judge.pbc}"
+             data-toggle="tooltip" data-html="true" data-placement="auto"
+             title="<strong class='text-primary'>Library Complexity:</strong><br> PCR bottleneck coefficient (PBC)"
+             dc-tooltip></div>
+      </div>
+
+      <div class="circle-col">
+        <div class="circle"
+             ng-class="{green: 
+modaldata.qc.judge.peaks, red: !
+modaldata.qc.judge.peaks}"
+             data-toggle="tooltip" data-html="true" data-placement="auto"
+             title="<strong class='text-primary'>ChIP enrichment:</strong><br> Sufficient number of peaks(above 500) with good enrichment(10 fold change)"
+             dc-tooltip></div>
+      </div>
+
+      <div class="circle-col">
+        <div class="circle"
+             ng-class="{green: 
+modaldata.qc.judge.frip, red: !
+modaldata.qc.judge.frip}"
+             data-toggle="tooltip" data-html="true" data-placement="auto"
+             title="<strong class='text-primary'>Signal to Noise Ratio:</strong><br> Fraction of reads in peaks (FRiP)"
+             dc-tooltip></div>
+      </div>
+      <div class="circle-col">
+        <div class="circle" data-toggle="tooltip" data-html="true" data-placement="auto"
+             title="<strong class='text-primary'>Evolutionary Conservation:</strong><br> Phastcons (mammals) conservation score around the peak summits"
+             dc-tooltip></div>
+      </div>
+
+      <div class="circle-col">
+        <div class="circle"
+             ng-class="{green: 
+modaldata.qc.judge.dhs, red: !
+modaldata.qc.judge.dhs}"
+             data-toggle="tooltip" data-html="true" data-placement="auto"
+             title="<strong class='text-primary'>Regulatory Region:</strong><br>  'DNase-seq union hypersensitive sites' (DHS) overlapped ratio in top 5000 peaks "
+             dc-tooltip></div>
+      </div>
+      <div class="circle-col">
+        <div class="circle"
+             ng-class="{true: 'green', false: 'red', NA: 'grey'}[
+modaldata.qc.judge.motif_judge]"
+             data-toggle="tooltip" data-html="true" data-placement="auto"
+             title="<strong class='text-primary'>Motif:</strong><br> Enrichment of corresponding motifs in peaks"
+             dc-tooltip></div>
+      </div>
+    </div>
+  </div>
+  <div class="row inspector-sub">
+    <div class="col-sm-12">
+      <strong>Visualize</strong>
+    </div>
+    <div class="col-sm-12">
+      <div class="btn-group">
+        <a target="_blank"
+           ng-href="http://epigenomegateway.wustl.edu/browser/?genome={{washuGenome}}&datahub=http://cistrome.org/dc/datahub/{{modaldata.id}}&gftk=refGene,full"
+           ng-class="{disabled: toolHidden}" id="genomebrowser-bw" type="button"
+           class="btn btn-default button-list">WashU Browser</a>
+        <a target="_blank"
+           ng-href="http://cistrome.org/dc/hgtext/{{modaldata.id}}/?db={{ucscGenome}}"
+           id="genomebrowser-bw" type="button"
+           class="btn btn-default button-list">UCSC Browser</a>
+
+      </div>
+
+    </div>
+
+    <div class="col-sm-12">
+      <strong>Download</strong>
+    </div>
+    <div class="col-sm-12">
+      <div class="btn-group">
+        <button type="button"
+                class="btn btn-default dropdown-toggle button-list download-button"
+                data-toggle="dropdown" ng-class="{disabled: toolHidden}">BED Peaks<span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+          <li id="file-bed"><a target="_blank"
+                               ng-href="http://cistrome.org/dc/file?type=bed&id={{modaldata.id}}">Download
+            to My Computer</a></li>
+          <li>
+            <form method="POST" action="http://cistrome.org/ap/tool_runner" id="bed_sender">
+              <input type="HIDDEN" value="cistrome_cr" name="tool_id">
+              <input type="HIDDEN" value="bed" name="data_type">
+              <input type="HIDDEN" value="http://cistrome.org/dc/file?type=bed&id={{modaldata.id}}" name="URL">
+              <input type="HIDDEN" value="{{modaldata.id}}_peaks.bed" name="name">
+            </form>
+            <a href ng-click="send_bed()">Send to Analysis Pipeline</a></li>
+        </ul>
+      </div>
+
+
+      <div class="btn-group">
+        <button type="button"
+                class="btn btn-default dropdown-toggle button-list download-button"
+                data-toggle="dropdown" ng-class="{disabled: toolHidden}">BIGWIG File<span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+          <li>
+            <form method="POST" action="http://cistrome.org/ap/tool_runner" id="bw_sender">
+              <input type="HIDDEN" value="cistrome_cr" name="tool_id">
+              <input type="HIDDEN" value="bigwig" name="data_type">
+              <input type="HIDDEN" value="http://cistrome.org/dc/file?type=bw&id={{modaldata.id}}" name="URL">
+              <input type="HIDDEN" value="{{modaldata.id}}.bw" name="name">
+            </form>
+            <a href ng-click="send_bw()">Send to Analysis Pipeline</a></li>
+        </ul>
+      </div>
+
+      <div class="btn-group">
+        <a id="putative-target-file" type="button" class="btn btn-default button-list"
+           href="http://cistrome.org/dc/file?type=pt&id={{modaldata.id}}">Putative
+          Targets</a>
+      </div>
+    </div>
+  </div>  
+  </div>
+</div>
+
   <div class="modal-footer">
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
   </div>
@@ -435,7 +636,7 @@
 
       </div>
 
-      <!-- <a class="btn btn-default btn-block download-button" id="download-report" href="" download target="_blank"> -->
+      <!-- <a class="btn btn-default btn-block download-button" id="download-report" href="" download target="_blank">
       <!--     QC Report -->
       <!-- </a> -->
 
@@ -559,7 +760,7 @@
           <td ng-bind="motif.zscore | motifZscore" class="motif"></td>
           <td ng-bind="motif.hits" class="motif"></td>
           <td>
-            <img ng-src="http://cistrome.org/db/motif_logo?id={{ inspector.id }}&logoid={{ motif.id }}" class="img-rounded motifImg"> </img>
+            <img ng-src="http://cistrome.org/dc/motif_logo?id={{ inspector.id }}&logoid={{ motif.id }}" class="img-rounded motifImg"> </img>
           </td>
         </tr>
         </tbody>

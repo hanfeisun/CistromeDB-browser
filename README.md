@@ -35,3 +35,12 @@ grunt serve
 
 grunt serve:build
 ```
+
+### Deploy to Web Server ###
+
+Change host and port to your own ones, change dest key to your deployed server path, then run,
+```
+#!shell
+
+grunt sftp-deploy
+```

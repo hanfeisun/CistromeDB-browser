@@ -397,7 +397,22 @@ module.exports = function (grunt) {
         'svgmin'
       ]
     },
-
+    'sftp-deploy': {
+      build: {
+        auth: {
+          host: 'xxx.org',
+          port: 33001,
+          authKey: 'key1'
+        },
+        cache: 'sftpCache.json',
+        src: 'dist',
+        dest: 'your_path',
+        exclusions: ['**/.DS_Store', '**/.htacess', '**/Thumbs.db', 'dist/tmp'],
+        serverSep: '/',
+        concurrency: 4,
+        progress: true
+      }
+    },
     // Test settings
     karma: {
       unit: {
@@ -407,13 +422,12 @@ module.exports = function (grunt) {
     }
   });
 
-
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
 
-    grunt.task.run([
+    return grunt.task.run([
       'clean:server',
       'wiredep',
       'concurrent:server',
@@ -422,6 +436,8 @@ module.exports = function (grunt) {
       'watch'
     ]);
   });
+
+  grunt.loadNpmTasks('grunt-sftp-deploy');
 
   grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function (target) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
