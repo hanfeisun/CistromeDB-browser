@@ -19,7 +19,7 @@ dcApp.controller "ModalInstanceCtrl", ($scope, $modalInstance, modaldata) ->
 
 
 dcApp.controller "filterController",
-  ($scope, $sce, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast, $modal) ->
+  ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast, $modal) ->
     filterSentData =
       species: "all"
       cellinfos: "all"
@@ -145,6 +145,10 @@ dcApp.controller "filterController",
       $scope.datasetIDHidden = true
       $scope.unvalidatedHidden = true
       $scope.factorFirst = false
+      if typeof($window.sharedData) == "undefined"
+        console.log ;
+      else
+        $scope.setInspector $window.sharedData
       return
 
     $scope.pageInRange = ->
@@ -238,31 +242,35 @@ dcApp.controller "filterController",
 
       return
 
-    $scope.open = (id, size)->
-      modalIns = $modal.open(
-        templateUrl: "dcModal.html"
-        controller: "ModalInstanceCtrl"
-        size: size
-        resolve:
-          modaldata: ->
-            return $scope.moaldata;
-      )
-      #      modalIns.result.then();
-      return
+    # $scope.open = (id, size)->
+    #   modalIns = $modal.open(
+    #     templateUrl: "dcModal.html"
+    #     controller: "ModalInstanceCtrl"
+    #     size: size
+    #     resolve:
+    #       modaldata: ->
+    #         return $scope.moaldata;
+    #   )
+    #   #      modalIns.result.then();
+    #   return
 
-    $scope.setMoal = (id, size) ->
-      blockUI.start()
-      inspectorService.request(id).success((msg, status) ->
-        $scope.moaldata = msg
+    #scope.setMoal = (id, size) ->
+      # blockUI.start()
+      # inspectorService.request(id).success((msg, status) ->
+      #   $scope.moaldata = msg
+      #   $window.open "http://cistrome.org/db","_blank"
+      #   blockUI.stop()
+      #   # $scope.open id, size
+      #   return
+      # ).error ->
+      #   $scope.showToast 0
+      #   blockUI.stop()
+      #   return
+      # return
 
-        blockUI.stop()
-
-        $scope.open id, size
-        return
-      ).error ->
-        $scope.showToast 0
-        blockUI.stop()
-        return
+    $scope.setWindow = (id) ->
+      win = $window.open "/db", "_blank"
+      win.sharedData = id
       return
 
     $scope.showToast = (status) ->
@@ -323,7 +331,7 @@ dcApp.controller "filterController",
         return
 
       inspectorService.get id
-      return
+      return id
 
     initialize()
 
@@ -342,7 +350,6 @@ dcApp.directive "dcTab", ->
       e.preventDefault()
       element.tab "show"
       return
-
     return
 
 dcApp.filter "bioSource", ->
@@ -361,7 +368,6 @@ dcApp.filter "bioSource", ->
       bioSource.push d[bioKeys[i]]  if d[bioKeys[i]]
       i++
     bioSource.join "; "
-
   bioSourceFilter
 
 dcApp.filter "datasetMeta", ->

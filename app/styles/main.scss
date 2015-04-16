@@ -3,6 +3,10 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+@mixin pos {
+  position: relative;
+}
+
 body {
   background-color: rgb(241, 242, 246);
 }
@@ -119,6 +123,15 @@ div.filter {
 }
 
 
+.aboutBox {
+  border-radius: 8px 8px 4px 4px;
+  width: 800px;
+  border: 2px solid #b6b7bd;
+  box-shadow: -1px -2px 1px #b6b7bd inset;
+  // margin: 20px 20px 20px 20px;
+  padding: 20px 10px 10px 20px;
+}
+
 div.filter h2 {
   margin: 0;
   padding: 0.2em;
@@ -197,7 +210,7 @@ div.filter h2 {
 }
 
 .bs-docs-header .container {
-  position: relative
+  @include pos;
 }
 
 @media (min-width: 768px) {
@@ -229,7 +242,7 @@ div.filter h2 {
 }
 
 .bs-docs-header {
-  position: relative;
+  @include pos;
   padding: 30px 15px;
   color: #cdbfe3;
   text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
@@ -361,7 +374,7 @@ div.top-align{
 
 }
 
-@mixin left($value: 60%) {
+@mixin left($value: 45%) {
   vertical-align: middle;
   text-align: center;
   display: table-cell;
@@ -373,11 +386,10 @@ $wd: 70%;
 
 img.motifImg {
   @include left($wd);
-
 }
 
 img.conserv {
-  @include left($wd);
+  @include left(40%);
 }
 
 .table > tbody > tr > td.conserv {

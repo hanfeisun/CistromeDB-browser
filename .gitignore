@@ -5,3 +5,5 @@ dist
 bower_components
 .idea
 .ftppass
+sftpCache.json
+Gruntfile_dev.js

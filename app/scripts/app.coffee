@@ -6,6 +6,7 @@ dcApp = angular.module("dcApp", [
   "ngAnimate"
   "ngSanitize"
   "ngToast"
+  "ngRoute"
   "ui.bootstrap"
 ])
 
@@ -21,6 +22,15 @@ dcApp = angular.module("dcApp", [
            )
            return
 ]
+
+.config ($routeProvider, $locationProvider) ->
+  $routeProvider
+    .when('/', {
+        templateUrl: 'views/main.html'
+      })
+    .when('/about', {
+        templateUrl: 'views/about.html'
+    }) 
 
 
 .constant("root", "http://cistrome.org")
