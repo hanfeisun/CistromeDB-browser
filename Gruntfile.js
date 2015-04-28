@@ -48,6 +48,10 @@ module.exports = function (grunt) {
       gruntfile: {
         files: ['Gruntfile.js']
       },
+      protractor: {
+        files: ['test/**/**/test.coffee'],
+        tasks: ['protractor:continuous']
+      },
       livereload: {
         options: {
           livereload: '<%= connect.options.livereload %>'
@@ -58,6 +62,30 @@ module.exports = function (grunt) {
           '.tmp/scripts/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
+      }
+    },
+
+    protractor: {
+      options: {
+        configFile: 'test/protractor.conf.coffee',
+        noColor: false,
+
+        // debug: true,
+        args: {
+          seleniumServerJar: '/usr/local/lib/node_modules/protractor/selenium/selenium-server-standalone-2.45.0.jar',
+          chromeDriver: '/usr/local/lib/node_modules/protractor/selenium/chromedriver'
+        }
+      },
+      e2e: {
+        options: {
+          // stop if test fails
+          keepAlive: false
+        }
+      },
+      continuous: {
+        options: {
+          keepAlive: true
+        }
       }
     },
 
@@ -421,6 +449,9 @@ module.exports = function (grunt) {
       }
     }
   });
+
+  grunt.registerTask('e2e-test', ['connect:test', 'protractor:continuous', 'watch:protractor']);
+
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {

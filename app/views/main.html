@@ -77,7 +77,7 @@
 
       <div class="circle-col">
         <div class="circle"
-             ng-class="{green: 
+             ng-class="{green:
 modaldata.qc.judge.fastqc, red: !
 modaldata.qc.judge.fastqc}"
              data-toggle="tooltip" data-html="true" data-placement="auto"
@@ -86,7 +86,7 @@ modaldata.qc.judge.fastqc}"
       </div>
       <div class="circle-col">
         <div class="circle"
-             ng-class="{green: 
+             ng-class="{green:
 modaldata.qc.judge.map, red: !
 modaldata.qc.judge.map}"
              data-toggle="tooltip" data-html="true" data-placement="auto"
@@ -96,7 +96,7 @@ modaldata.qc.judge.map}"
 
       <div class="circle-col">
         <div class="circle"
-             ng-class="{green: 
+             ng-class="{green:
 modaldata.qc.judge.pbc, red: !
 modaldata.qc.judge.pbc}"
              data-toggle="tooltip" data-html="true" data-placement="auto"
@@ -106,7 +106,7 @@ modaldata.qc.judge.pbc}"
 
       <div class="circle-col">
         <div class="circle"
-             ng-class="{green: 
+             ng-class="{green:
 modaldata.qc.judge.peaks, red: !
 modaldata.qc.judge.peaks}"
              data-toggle="tooltip" data-html="true" data-placement="auto"
@@ -116,7 +116,7 @@ modaldata.qc.judge.peaks}"
 
       <div class="circle-col">
         <div class="circle"
-             ng-class="{green: 
+             ng-class="{green:
 modaldata.qc.judge.frip, red: !
 modaldata.qc.judge.frip}"
              data-toggle="tooltip" data-html="true" data-placement="auto"
@@ -131,7 +131,7 @@ modaldata.qc.judge.frip}"
 
       <div class="circle-col">
         <div class="circle"
-             ng-class="{green: 
+             ng-class="{green:
 modaldata.qc.judge.dhs, red: !
 modaldata.qc.judge.dhs}"
              data-toggle="tooltip" data-html="true" data-placement="auto"
@@ -213,7 +213,7 @@ modaldata.qc.judge.motif_judge]"
           Targets</a>
       </div>
     </div>
-  </div>  
+  </div>
   </div>
 </div>
 
@@ -238,7 +238,7 @@ modaldata.qc.judge.motif_judge]"
                       ng-click="setFilter('keyword','')"></span>
     </div>
     <div class="col-sm-3">
-      <button class="btn btn-primary btn-block" ng-click="setFilter('keyword', keyword)">
+      <button class="button-search btn btn-primary btn-block" ng-click="setFilter('keyword', keyword)">
         Search
       </button>
     </div>
@@ -310,7 +310,7 @@ modaldata.qc.judge.motif_judge]"
           <li class="checked" ng-class="{checked: selectedFilterRow('factors') == -1}"
               ng-click="selectFilterRow('factors', -1); setFilter('factors', 'all')"> All
           </li>
-          <li ng-repeat='factor in factors' ng-class="{checked: selectedFilterRow('factors') == $index}"
+          <li ng-repeat='factor in factors' id="{{factor}}" ng-class="{checked: selectedFilterRow('factors') == $index}"
               ng-click="selectFilterRow('factors', $index); setFilter('factors', factor)"
               ng-bind="factor"></li>
         </ul>
@@ -608,13 +608,13 @@ modaldata.qc.judge.motif_judge]"
 <div class="row" id="toolTabSection">
 <div class="col-sm-12">
 <ul class="nav nav-tabs nav-justified" role="tablist" id="toolTab">
-  <li class="active"><a href="#qc-reports" dc-tab>QC reports</a></li>
-  <li ng-hide="inspector.qc.judge.motif_judge=='NA'"><a href="#qc-motif" ng-click="setMotif(inspector.id)" dc-tab>QC
+  <li class="active"><a href="#qc-reports" class="quality-a" dc-tab>QC reports</a></li>
+  <li ng-hide="inspector.qc.judge.motif_judge=='NA'"><a href="#qc-motif" class="motif-a" ng-click="setMotif(inspector.id)" dc-tab>QC
     motifs</a></li>
-  <li><a href="#allTarget" id="target-trigger" ng-click="setTarget(inspector.id)" dc-tab>Get
+  <li><a href="#allTarget" id="target-trigger" class="target-a" ng-click="setTarget(inspector.id)" dc-tab>Get
     top putative targets</a></li>
-  <li><a href="#peak" ng-click="targets=[]" dc-tab>Check a putative target</a></li>
-  <li><a href="#similar" ng-click="setSimilar(inspector.id);" dc-tab>Find similar datasets</a></li>
+  <li><a href="#peak" class="peak-a" ng-click="targets=[]" dc-tab>Check a putative target</a></li>
+  <li><a href="#similar" class="similar-a" ng-click="setSimilar(inspector.id);" dc-tab>Find similar datasets</a></li>
 </ul>
 <div id="toolTabContent" class="tab-content">
 <div class="tab-pane fade in active" id="qc-reports">
@@ -789,7 +789,7 @@ modaldata.qc.judge.motif_judge]"
         <th>Score</th>
       </tr>
       </thead>
-   
+
       <tbody>
       <tr ng-repeat="similar in similars | orderBy:predicate:true" ng-class="{checked: selectedInspectorRow() == similar.id}" ng-click="setWindow(similar.id)">
         <td ng-bind="similar.species__name"></td>

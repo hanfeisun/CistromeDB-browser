@@ -7,3 +7,4 @@ bower_components
 .ftppass
 sftpCache.json
 Gruntfile_dev.js
+*~

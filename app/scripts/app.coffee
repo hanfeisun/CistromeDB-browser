@@ -30,7 +30,10 @@ dcApp = angular.module("dcApp", [
       })
     .when('/about', {
         templateUrl: 'views/about.html'
-    }) 
+    })
+    .when('/test', {
+      templateUrl: 'views/test.html'
+    })
 
 
 .constant("root", "http://cistrome.org")
