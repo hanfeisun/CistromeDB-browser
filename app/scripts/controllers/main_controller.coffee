@@ -19,7 +19,7 @@ dcApp.controller "ModalInstanceCtrl", ($scope, $modalInstance, modaldata) ->
 
 
 dcApp.controller "filterController",
-  ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast, $modal) ->
+  ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast, $modal, root) ->
     filterSentData =
       species: "all"
       cellinfos: "all"
@@ -291,6 +291,12 @@ dcApp.controller "filterController",
         dismissOnClick: true
       )
       return
+
+
+    $scope.setMotifHtml = (id) ->
+      console.log(id)
+      $scope.currentMotifUrl = $sce.trustAsResourceUrl(root + "/motif_html/" + id + "/table.html");
+#      $scope.currentMotifUrl = $sce.trustAsResourceUrl(root + "/motif_html/" + id + "/mdseqpos_index.html");
 
     $scope.setMotif = (id, gene) ->
       return  if id is $scope.id and not gene

@@ -609,8 +609,8 @@ modaldata.qc.judge.motif_judge]"
 <div class="col-sm-12">
 <ul class="nav nav-tabs nav-justified" role="tablist" id="toolTab">
   <li class="active"><a href="#qc-reports" class="quality-a" dc-tab>QC reports</a></li>
-  <li ng-hide="inspector.qc.judge.motif_judge=='NA'"><a href="#qc-motif" class="motif-a" ng-click="setMotif(inspector.id)" dc-tab>QC
-    motifs</a></li>
+<!--  <li ng-hide="inspector.qc.judge.motif_judge=='NA'"><a href="#qc-motif" class="motif-a" ng-click="setMotif(inspector.id)" dc-tab>QC     motifs</a></li> -->
+  <li ng-hide="inspector.qc.judge.motif_judge=='NA'"><a href="#qc-motif" class="motif-a" ng-click="setMotifHtml(inspector.id)" dc-tab>QC motifs</a></li>
   <li><a href="#allTarget" id="target-trigger" class="target-a" ng-click="setTarget(inspector.id)" dc-tab>Get
     top putative targets</a></li>
   <li><a href="#peak" class="peak-a" ng-click="targets=[]" dc-tab>Check a putative target</a></li>
@@ -690,7 +690,7 @@ modaldata.qc.judge.motif_judge]"
   </div>
 </div>
 <div class="tab-pane fade" id="qc-motif">
-  <div class="row">
+<!--  <div class="row">
     <div class="col-sm-12 table-responsive">
       <table class="table table-striped table-bordered">
         <thead class="motif">
@@ -715,7 +715,9 @@ modaldata.qc.judge.motif_judge]"
 
       </table>
     </div>
-  </div>
+  </div> -->
+<iframe height=700px width=100% ng-src="{{currentMotifUrl}}" name="iframe_motif"></iframe>
+<iframe height=180px width=100% name="ftop" />
 </div>
 <div class="tab-pane fade" id="peak">
   <div class="tool-content">
