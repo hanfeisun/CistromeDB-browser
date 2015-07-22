@@ -292,23 +292,23 @@ dcApp.controller "filterController",
       )
       return
 
-
+      
     $scope.setMotifHtml = (id) ->
-      console.log(id)
       $scope.currentMotifUrl = $sce.trustAsResourceUrl(root + "/motif_html/" + id + "/table.html");
+      $scope.currentLogo = ""
 #      $scope.currentMotifUrl = $sce.trustAsResourceUrl(root + "/motif_html/" + id + "/mdseqpos_index.html");
 
-    $scope.setMotif = (id, gene) ->
-      return  if id is $scope.id and not gene
-      blockUI.start()
-      motifService.request(id, gene).success((data, status) ->
-        $scope.motifs = data
-        blockUI.stop()
-        return
-      ).error ->
-        blockUI.stop()
-        $scope.showToast(0)
-      return
+#    $scope.setMotif = (id, gene) ->
+#      return  if id is $scope.id and not gene
+#      blockUI.start()
+#      motifService.request(id, gene).success((data, status) ->
+#        $scope.motifs = data
+#        blockUI.stop()
+#        return
+#      ).error ->
+#        blockUI.stop()
+#        $scope.showToast(0)
+#      return
 
     $scope.setInspector = (id) ->
       blockUI.start()

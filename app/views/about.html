@@ -4,28 +4,37 @@
 	<div class="col-md-offset-1 col-md-11">
 <h1>About Cistrome DB resources</h1>
 <p>Cistrome DB is a comprehensive resource of hg38 and mm10 ChIP-seq data collection.
-Here is a brief introduction about the workflow.
+Here is a brief introduction about the workflow of <a href="http://cistrome.org/chilin">ChiLin</a>.
 </p>
 <ul>
-	<li>
-		Mapping: bwa and post-processing with MAPQ 1
-	</li>
-	<li>
-		peak calling: latest macs2 after removing duplicate reads.
-	</li>
-	<li>
-		Peak conservation analysis
-	</li>
-	<li>
-		Peak meta region analysis 
-	</li>
-	<li>
-		Peak regulatory potential analysis
-	</li>
-	<li>
-		ChIP-seq quality control analysis
-	</li>
+mapping step: 
+    bwa aln -q 5 -l 32 -k 2 -t 8 index FASTQ > sai
+    bwa samse index sai FASTQ > sam  
 </ul>
+<ul>
+reads filter step: samtools view -bS -t chromInfo_file.txt -q 1 sam > bam  
+</ul>
+<ul>
+(optional)sort bam: samtools sort -m 4000000000 bam > bam_sort  
+</ul>
+<ul>
+(optional)collect statistics: samtools flagstat bam > bam.stat  
+</ul>  
+<ul>
+ Peak calling: macs2 callpeak --SPMR -B -q 0.01 --keep-dup 1 --extsize=146 --nomodel -g hs   -t bam  -n test  
+</ul>
+<ul>
+ bigwiggle generation: 
+    bedtools intersect -a bedGraph -b chrom.bed -wa -f 1.00 > bedGraph.tmp
+    bedGraphToBigWig bedGraph.tmp chromInfo_file.txt bigwiggle
+</ul>
+<ul>
+choose the top 5k summits for motif scan, use all summits if the number of summits is less than 5k: 
+    MDSeqPos.py -d  -w 600  -p 0.001 -m cistrome.xml -O output bed hg38  
+</ul>  
+<ul>
+choose the top 10k peaks for RP computing: RegPotential.py -t top -g refGene -n test -d 100000  
+</ul>  
 </div>
 
 <div class="col-md-offset-1 col-md-11">

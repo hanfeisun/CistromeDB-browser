@@ -2,7 +2,7 @@
 <html class="no-js">
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Cistrome DB</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -37,7 +37,7 @@
         <ul class="nav navbar-nav">
           <li><a href="#">Home</a></li>
           <li><a href="#about">About</a></li>
-
+	  <li><a href="#stat">Site Statistics</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
@@ -94,6 +94,24 @@
 <script src="scripts/controllers/main_controller.js"></script>
 <script src="scripts/controllers/test.js"></script>
 <!-- endbuild -->
+<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['setDocumentTitle', document.title]);
+  _paq.push(['setDownloadClasses', "download"]);
+  _paq.push(['setLinkClasses', "external"])  
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//compbio3.tongji.edu.cn/piwik/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 2]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//compbio3.tongji.edu.cn/piwik/piwik.php?idsite=2" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
 </body>
 
 

@@ -544,7 +544,7 @@ modaldata.qc.judge.motif_judge]"
                 class="btn btn-default dropdown-toggle button-list download-button"
                 data-toggle="dropdown" ng-class="{disabled: toolHidden}">BED Peaks<span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
-          <li id="file-bed"><a target="_blank"
+          <li id="file-bed"><a class="download" target="_blank"
                                ng-href="http://cistrome.org/dc/file?type=bed&id={{inspector.id}}">Download
             to My Computer</a></li>
           <li>
@@ -609,7 +609,6 @@ modaldata.qc.judge.motif_judge]"
 <div class="col-sm-12">
 <ul class="nav nav-tabs nav-justified" role="tablist" id="toolTab">
   <li class="active"><a href="#qc-reports" class="quality-a" dc-tab>QC reports</a></li>
-<!--  <li ng-hide="inspector.qc.judge.motif_judge=='NA'"><a href="#qc-motif" class="motif-a" ng-click="setMotif(inspector.id)" dc-tab>QC     motifs</a></li> -->
   <li ng-hide="inspector.qc.judge.motif_judge=='NA'"><a href="#qc-motif" class="motif-a" ng-click="setMotifHtml(inspector.id)" dc-tab>QC motifs</a></li>
   <li><a href="#allTarget" id="target-trigger" class="target-a" ng-click="setTarget(inspector.id)" dc-tab>Get
     top putative targets</a></li>
@@ -690,7 +689,7 @@ modaldata.qc.judge.motif_judge]"
   </div>
 </div>
 <div class="tab-pane fade" id="qc-motif">
-<!--  <div class="row">
+<!--<div class="row">
     <div class="col-sm-12 table-responsive">
       <table class="table table-striped table-bordered">
         <thead class="motif">
@@ -707,7 +706,7 @@ modaldata.qc.judge.motif_judge]"
           <td ng-bind="motif.zscore | motifZscore" class="motif"></td>
           <td ng-bind="motif.hits" class="motif"></td>
           <td>
-            <img ng-src="http://cistrome.org/dc/motif_logo?id={{ inspector.id }}&logoid={{ motif.id }}" class="img-rounded motifImg"> </img>
+    <img ng-src="http://cistrome.org/dc/motif_logo?id={{ inspector.id }}&logoid={{ motif.id }}" class="img-rounded motifImg"> </img>
           </td>
         </tr>
         </tbody>
@@ -715,10 +714,19 @@ modaldata.qc.judge.motif_judge]"
 
       </table>
     </div>
-  </div> -->
-<iframe height=700px width=100% ng-src="{{currentMotifUrl}}" name="iframe_motif"></iframe>
-<iframe height=180px width=100% name="ftop" />
+  </div>-->
+<div class="tool-content table-responsive" id="motif-reports-content" class="motif-reports-content-600px">
+<!-- height=700px width=100% 
+ height=200px width=100% -->
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" ng-src="{{currentMotifUrl}}" name="iframe_motif"></iframe>
 </div>
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" ng-src="{{currentLogo}}" name="ftop"></iframe>
+</div>
+</div>
+</div>
+
 <div class="tab-pane fade" id="peak">
   <div class="tool-content">
     <div class="row">
@@ -779,7 +787,7 @@ modaldata.qc.judge.motif_judge]"
   </div>
 </div>
 <div class="tab-pane fade" id="similar">
-  <div class="tool-content">
+  <div class="tool-content listboxclass">
     <table class="table table-striped table-bordered table-condensed">
       <thead>
       <tr>
@@ -821,10 +829,10 @@ modaldata.qc.judge.motif_judge]"
         <td ng-bind="target.symbol"></td>
         <td ng-bind="target.score"></td>
         <td ng-bind="target.coordinate"></td>
-        <td><a target="_blank"
+        <td><a target="_blank" class="external"
                ng-href="http://epigenomegateway.wustl.edu/browser/?genome={{washuGenome}}&datahub=http://cistrome.org/dc/datahub/{{inspector.id}}&gftk=refGene,full&coordinate={{target.visual_coordinate}}"
                class="btn btn-default btn-xs">WashU</a>
-          <a target="_blank"
+          <a target="_blank" class="external"
              ng-href="http://cistrome.org/dc/hgtext/{{inspector.id}}/?db={{ucscGenome}}&position={{target.visual_coordinate | escape}}"
              class="btn btn-default btn-xs">UCSC</a></td>
 
