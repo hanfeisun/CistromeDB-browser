@@ -16,15 +16,42 @@
   http://compbio3.tongji.edu.cn/piwik/index.php?module=Widgetize&action=index&idSite=2&period=day&date=yesterday
 </div>-->
 <div class="container">
+    <!--
     <div class="row">
-        <div class="col-sm-12" id="widgetIframe"><iframe width="100%" height="230" src="http://compbio3.tongji.edu.cn/piwik/index.php?module=Widgetize&action=iframe&columns[]=nb_visits&columns[]=nb_uniq_visitors&columns[]=nb_actions&widget=1&moduleToWidgetize=VisitsSummary&actionToWidgetize=getEvolutionGraph&idSite=2&period=range&date=2015-05-29,today&disableLink=1&widget=1" scrolling="no" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>
+        <div class="col-sm-12" id="widgetIframe"><iframe width="100%" height="250" src="http://compbio3.tongji.edu.cn/piwik/index.php?module=Widgetize&action=iframe&columns[]=nb_uniq_visitors&columns[]=nb_actions&widget=1&moduleToWidgetize=VisitsSummary&actionToWidgetize=getEvolutionGraph&idSite=2&period=range&date=2015-05-29,today&disableLink=1&widget=1" scrolling="no" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>
+    </div>-->
+    <div class="row">
+        <div class="col-sm-12">
+         <div id="chart">
+         </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-sm-12" id="widgetIframe"><iframe width="100%" height="550" src="http://compbio3.tongji.edu.cn/piwik/index.php?module=Widgetize&action=iframe&widget=1&moduleToWidgetize=UserCountryMap&actionToWidgetize=visitorMap&idSite=2&period=range&date=2015-05-29,2015-08-24&disableLink=1&widget=1" scrolling="no" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>
     </div>
 </div>
 
-<!-- http://developer.piwik.org/api-reference/reporting-api-metadata-->
-<!--<div class="container">
-    <img src="http://compbio3.tongji.edu.cn/piwik/index.php?module=API&method=ImageGraph.get&idSite=2&apiModule=VisitsSummary&apiAction=get&token_auth=anonymous&graphType=evolution&period=day&date=2015-05-01,today&width=500&height=250&colors=FF0000">
-</div>-->
+
+<script>
+    var chart = c3.generate({
+        data: {
+            x: 'Date',
+            url: 'evolution_piwik.csv'
+        },
+        axis: {
+            x: {
+                type: 'timeseries',
+                tick: {
+                    format: '%Y-%m-%d'
+                }
+            }
+        }
+    });
+</script>
+<!-- http://developer.piwik.org/api-reference/reporting-api-metadata, https://developer.piwik.org/api-reference/Piwik/ViewDataTable/Config,
+<!-- http://compbio3.tongji.edu.cn/piwik/index.php?module=API&method=API.get&format=JSON&idSite=2&period=day&date=2015-05-29,today&filter_limit=false&disable_queued_filters=1&format_metrics=1&period=day&expanded=1&token_auth=6481c3930e8b270fe0f97f1f47ae5e40&filter_limit=100-->
+<!-- http://compbio3.tongji.edu.cn/piwik/index.php?module=API&method=API.get&format=CSV&idSite=2&period=day&date=2015-05-29,today&filter_limit=false&disable_queued_filters=1&format_metrics=1&period=day&expanded=1&translateColumnNames=1&language=en&token_auth=6481c3930e8b270fe0f97f1f47ae5e40&filter_limit=101&token_auth=6481c3930e8b270fe0f97f1f47ae5e40&filter_limit=100 -->
+<!-- <div class="container">
+    <img src="http://compbio3.tongji.edu.cn/piwik/index.php?module=API&method=ImageGraph.get&idSite=2&apiModule=VisitsSummary&a&apiAction=get&token_auth=anonymous&graphType=evolution&period=day&date=2015-05-01,today&width=auto&height=250&colors=FF0000">
+</div> -->
+

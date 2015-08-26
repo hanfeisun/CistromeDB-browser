@@ -9,6 +9,7 @@
   <!-- build:css(.) styles/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/angular-block-ui/dist/angular-block-ui.css" />
+  <link rel="stylesheet" href="bower_components/c3/c3.css" />
   <link rel="stylesheet" href="bower_components/ngtoast/dist/ngToast.css" />
   <!-- endbower -->
   <!-- endbuild -->
@@ -47,7 +48,7 @@
 
       </div>
     </div>
-  </nav>  
+  </nav>
 
   <div class="bs-docs-header" id="content">
     <div class="container"><h1><i class="fa fa-dashboard"></i>Dataset Browser</h1></div>
@@ -76,14 +77,16 @@
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
 <script src="bower_components/angucomplete/angucomplete.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/c3/c3.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/ngtoast/dist/ngToast.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -99,7 +102,7 @@
   var _paq = _paq || [];
   _paq.push(['setDocumentTitle', document.title]);
   _paq.push(['setDownloadClasses', "download"]);
-  _paq.push(['setLinkClasses', "external"])  
+  _paq.push(['setLinkClasses', "external"])
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {
@@ -113,6 +116,5 @@
 <noscript><p><img src="//compbio3.tongji.edu.cn/piwik/piwik.php?idsite=2" style="border:0;" alt="" /></p></noscript>
 <!-- End Piwik Code -->
 </body>
-
 
 </html>
