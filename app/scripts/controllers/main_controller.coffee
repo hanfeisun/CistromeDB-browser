@@ -18,6 +18,19 @@ dcApp.controller "ModalInstanceCtrl", ($scope, $modalInstance, modaldata) ->
   return
 
 
+dcApp.controller "VideoCtrl", ($sce) ->
+  this.config = 
+    autoHide: false
+    autoHideTime: 3000
+    autoPlay: false  
+    sources: [
+      src:$sce.trustAsResourceUrl "http://cistrome.org/~qqin/cistromedb.mp4"
+      type: "video/mp4"      
+    ]
+    theme: "bower_components/videogular-themes-default/videogular.css"
+    
+  return
+
 dcApp.controller "filterController",
   ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast, $modal, root) ->
     filterSentData =

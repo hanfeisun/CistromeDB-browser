@@ -8,6 +8,12 @@ dcApp = angular.module("dcApp", [
   "ngToast"
   "ngRoute"
   "ui.bootstrap"
+  "ngSanitize",
+  "com.2fdevs.videogular",
+  "com.2fdevs.videogular.plugins.controls",
+  "com.2fdevs.videogular.plugins.overlayplay",
+  "com.2fdevs.videogular.plugins.poster",
+  "com.2fdevs.videogular.plugins.buffering"  
 ])
 
 .config (blockUIConfig) ->
@@ -33,6 +39,9 @@ dcApp = angular.module("dcApp", [
     })
     .when('/stat', {
         templateUrl: 'views/stat.html'
+    })
+    .when('/tutorial', {
+        templateUrl: 'views/tutorial.html'
     })
     .when('/test', {
       templateUrl: 'views/test.html'

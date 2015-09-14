@@ -253,7 +253,7 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
           '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.dist %>/styles/fonts/*'
+//      '<%= yeoman.dist %>/styles/fonts/*'
         ]
       }
     },
@@ -388,7 +388,15 @@ module.exports = function (grunt) {
             'images/{,*/}*.{webp}',
             'fonts/{,*/}*.*'
           ]
-        }, {
+        },
+        {
+          expand:true,
+          flatten:true,
+          cwd: '.',
+          src: 'bower_components/videogular-themes-default/fonts/*',
+          dest: '<%= yeoman.dist %>/styles/fonts/'
+        },
+        {
           expand: true,
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
