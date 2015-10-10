@@ -610,9 +610,9 @@ modaldata.qc.judge.motif_judge]"
 <ul class="nav nav-tabs nav-justified" role="tablist" id="toolTab">
   <li class="active"><a href="#qc-reports" class="quality-a" dc-tab>QC reports</a></li>
   <li ng-hide="inspector.qc.judge.motif_judge=='NA'"><a href="#qc-motif" class="motif-a" ng-click="setMotifHtml(inspector.id)" dc-tab>QC motifs</a></li>
-  <li><a href="#allTarget" id="target-trigger" class="target-a" ng-click="setTarget(inspector.id)" dc-tab>Get
+  <li><a href="#allTarget" id="target-trigger" class="target-a" ng-click="setTarget('')" dc-tab>Get
     top putative targets</a></li>
-  <li><a href="#peak" class="peak-a" ng-click="targets=[]" dc-tab>Check a putative target</a></li>
+  <li><a href="#peak" class="peak-a" dc-tab>Check a putative target</a></li>
   <li><a href="#similar" class="similar-a" ng-click="setSimilar(inspector.id);" dc-tab>Find similar datasets</a></li>
 </ul>
 <div id="toolTabContent" class="tab-content">
@@ -730,28 +730,41 @@ modaldata.qc.judge.motif_judge]"
 <div class="tab-pane fade" id="peak">
   <div class="tool-content">
     <div class="row">
-      <div class="form-inline" role="form">
-        <div class="form-group col-sm-9">
-          <label for="gene_query">Check whether this gene is a putative
+      <div class="form" role="form">
+        <div class="form-group col-sm-11">
+<!--           <label for="gene_query">Check whether this gene is a putative
             target: </label>
           <angucomplete id="mygene_genes"
                         placeholder="Search genes"
                         pause="400"
                         selectedObject="gene_query"
-                        url=http://mygene.info/v2/query?fields=symbol%2Cname&species={{mygeneSpecies}}&q="
+                        url="http://mygene.info/v2/query?fields=symbol%2Cname&species={{mygeneSpecies}}&q="
                         datafield="hits"
                         titlefield="symbol"
                         minlength="2"
                         descriptionfield="name"
-                        inputclass="form-control"/>
+                        inputclass="form-control"/> -->
+                        <angucomplete-alt id="ex1" placeholder="Search Genes" pause="400"
+                        selected-object="setTarget" 
+                        text-searching="Search for regulatory potential"
+                        remote-url="http://mygene.info/v2/query?fields=symbol%2Cname&species={{mygeneSpecies}}&q=" 
+                        remote-url-data-field="hits"
+                        title-field="symbol"
+                        minlength="1"
+                        description-field="name"
+                        input-class="form-control form-control-small"
+                        clear-selected="true"
+                        match-class="angucomplete-match"
+                        class="ng-isolate-scope"></angucomplete-alt>
+ 
+                   
         </div>
-        <div class="col-sm-3">
-          <button class="btn btn-primary btn-block" id="around-gene-search"
-                  ng-click="setTarget(inspector.id, gene_query.title)">
-            Search
-          </button>
-        </div>
-
+<!--         <div class="col-sm-3">
+                                   <button class="btn btn-primary btn-block" id="around-gene-search"
+                  ng-click="setTarget(selectedGene.title)">
+                   Search 
+              </button>
+        </div> -->
       </div>
     </div>
     <div class="row">
@@ -825,7 +838,7 @@ modaldata.qc.judge.motif_judge]"
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="target in targets">
+      <tr ng-repeat="target in targetsAll">
         <td ng-bind="target.symbol"></td>
         <td ng-bind="target.score"></td>
         <td ng-bind="target.coordinate"></td>

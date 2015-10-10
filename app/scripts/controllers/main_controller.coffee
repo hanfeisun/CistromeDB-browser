@@ -231,14 +231,24 @@ dcApp.controller "filterController",
     $scope.selectedInspectorRow = ->
       inspectorRowSelected
 
-    $scope.setTarget = (id, gene) ->
-      return  if id is $scope.id and not gene
+    $scope.setTarget = (gene) ->
+      if gene['title'] != undefined
+        genes = gene.title
+      else 
+        genes = gene
       blockUI.start()
-      targetService.request(id, gene).success (msg, status) ->
-        $scope.targets = msg
+      targetService.request($scope.id, genes).success((msg, status) ->
+        if gene is ""
+          $scope.targetsAll = msg
+        else
+          $scope.targets = msg
+          ##$scope.$broadcast('angucomplete-alt:clearInput', 'ex1');
         blockUI.stop()
         return
-
+      ).error ->
+        blockUI.stop()
+        $scope.showToast(0)
+        return
       return
 
     $scope.setSimilar = (id) ->
@@ -299,7 +309,7 @@ dcApp.controller "filterController",
         content: content[status]
         class: TYPE[status]
         dismissOnTimeout: true
-      #timeout: 800
+        #timeout: 800
         dismissButton: true
         dismissOnClick: true
       )
@@ -309,6 +319,7 @@ dcApp.controller "filterController",
     $scope.setMotifHtml = (id) ->
       $scope.currentMotifUrl = $sce.trustAsResourceUrl(root + "/motif_html/" + id + "/table.html");
       $scope.currentLogo = ""
+      return
 #      $scope.currentMotifUrl = $sce.trustAsResourceUrl(root + "/motif_html/" + id + "/mdseqpos_index.html");
 
 #    $scope.setMotif = (id, gene) ->
@@ -330,6 +341,9 @@ dcApp.controller "filterController",
         $scope.datasetHead = msg.treats[0]
         $scope.table = msg.qc.table
         $scope.inspector = msg
+        $scope.id = id
+        $scope.targetsAll = []
+        $scope.targets = []
         $scope.qcTable = $sce.trustAsHtml(msg.qcTable)
         $scope.mygeneSpecies = mygeneMap[$scope.datasetHead.species__name]
         $scope.washuGenome = genomeMap[$scope.datasetHead.species__name]

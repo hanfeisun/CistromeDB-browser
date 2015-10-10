@@ -443,6 +443,11 @@ img.conserv {
   margin: auto;
   overflow: hidden;
 }
+
+.angucomplete-dropdown {
+    overflow-y: auto;
+    max-height: 400px; // your preference
+}
  
 // @media (min-width: 1200px) {
 //   .videogular-container {

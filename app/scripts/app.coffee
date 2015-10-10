@@ -2,7 +2,7 @@
 dcApp = angular.module("dcApp", [
   "dcApp.services"
   "blockUI"
-  "angucomplete"
+  "angucomplete-alt"
   "ngAnimate"
   "ngSanitize"
   "ngToast"
