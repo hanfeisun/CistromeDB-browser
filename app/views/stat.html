@@ -21,16 +21,28 @@
         <div class="col-sm-12" id="widgetIframe"><iframe width="100%" height="250" src="http://compbio3.tongji.edu.cn/piwik/index.php?module=Widgetize&action=iframe&columns[]=nb_uniq_visitors&columns[]=nb_actions&widget=1&moduleToWidgetize=VisitsSummary&actionToWidgetize=getEvolutionGraph&idSite=2&period=range&date=2015-05-29,today&disableLink=1&widget=1" scrolling="no" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>
     </div>-->
     <div class="row">
-        <div class="col-sm-12 panel panel-default" id="result-panel">    
-    <table class="table table-bordered table-hover" id="dataset-table">
+        <div class="col-sm-12">
+            <dl class="panel panel-default">
+              <dt>A dataset</dt>
+              <dd>defined as multiple replicate ChIP samples and control samples.</dd>
+              <hr>
+              <dt>All datasets</dt>
+              <dd>all the ChIP-seq datasets collected from GEO and ENCODE site.</dd>
+              <hr>
+              <dt>Completed datasets</dt>
+              <dd>the ones we have processed through our ChIP-seq pipeline.</dd>
+              <hr>
+            </dl>
+        <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
           <th>Species</th>
-          <th>Completed Datasets Number</th>
-          <th>All Datasets Number</th>
+          <th>Number of completed datasets</th>
+          <th>Number of all datasets</th>
         </tr>
         </thead>
         <tbody>
+            
         <tr>
           <td>Human</td>
           <td>7087</td>
@@ -58,7 +70,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12" id="widgetIframe"><iframe width="100%" height="550" src="http://compbio3.tongji.edu.cn/piwik/index.php?module=Widgetize&action=iframe&widget=1&moduleToWidgetize=UserCountryMap&actionToWidgetize=visitorMap&idSite=2&period=range&date=2015-05-29,2015-08-24&disableLink=1&widget=1" scrolling="no" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>
+        <div class="col-sm-12" id="widgetIframe"><iframe width="100%" height="550" src="http://compbio3.tongji.edu.cn/piwik/index.php?module=Widgetize&action=iframe&widget=1&moduleToWidgetize=UserCountryMap&actionToWidgetize=visitorMap&idSite=2&period=range&date=2015-05-29,today&disableLink=1&widget=1" scrolling="no" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>
     </div>
 </div>
 
