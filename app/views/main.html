@@ -250,17 +250,20 @@ modaldata.qc.judge.motif_judge]"
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
         <li role="presentation"><a role="menuitem" tabindex="-1"
-                                   ng-click="toggleIncompleteData()">
-          <span class="glyphicon glyphicon-ok" ng-show="incompleteHidden"></span>Hide
-          Incomplete Datasets</a></li>
+                                   ng-click="toggleRunData()">
+          <span class="glyphicon glyphicon-ok" ng-show="run"></span>Show run samples</a></li>
 
         <li role="presentation"><a role="menuitem" tabindex="-1"
-                                   ng-click="toggleUnvalidatedData()">
-          <span class="glyphicon glyphicon-ok" ng-show="unvalidatedHidden"></span>Hide Unvalidated
-          Datasets</a></li>
+                                   ng-click="toggleCuratedData()">
+          <span class="glyphicon glyphicon-ok" ng-show="curated"></span>Show curated samples</a></li>
+
+        <li role="presentation"><a role="menuitem" tabindex="-1"
+                                   ng-click="toggleCompletedData()">
+          <span class="glyphicon glyphicon-ok" ng-show="completed"></span>Show completed samples</a></li>
+
         <li role="presentation"><a role="menuitem" tabindex="-1"
                                    ng-click="datasetIDHidden=!datasetIDHidden">
-          <span class="glyphicon glyphicon-ok" ng-show="datasetIDHidden"></span>Hide Dataset IDs</a></li>
+          <span class="glyphicon glyphicon-ok" ng-show="!datasetIDHidden"></span>Show sample id</a></li>          
       </ul>
     </div>
   </div>
@@ -390,19 +393,18 @@ modaldata.qc.judge.motif_judge]"
   <div class="row inspector_attrib_row">
     <div class="col-sm-3"><b>Title:</b></div>
     <div class="col-sm-9 inspector_attrib_value">
-      <b>Treatments</b>
+      <b>Treatment</b>
       <ul>
         <li ng-repeat="treat in inspector.treats"><a
           ng-href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{treat.unique_id}}"
           ng-bind="treat.name"></a></li>
       </ul>
-      <b ng-class="{hidden: inspector.conts.length==0}">Controls</b>
+<!--       <b ng-class="{hidden: inspector.conts.length==0}">Controls</b>
       <ul ng-class="{hidden: inspector.conts.length==0}">
         <li ng-repeat="cont in inspector.conts"><a
           ng-href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{cont.unique_id}}"
           ng-bind="cont.name"></a></li>
-      </ul>
-
+      </ul> -->
     </div>
 
   </div>
@@ -417,9 +419,9 @@ modaldata.qc.judge.motif_judge]"
       <span>PMID:</span>
       <a ng-href="http://www.ncbi.nlm.nih.gov/pubmed/{{datasetHead.paper__pmid}}"
          ng-bind="datasetHead.paper__pmid"></a>
-
     </div>
   </div>
+
   <div class="row inspector_attrib_row">
     <div class="col-sm-3"><b>Factor:</b></div>
     <div class="col-sm-9 inspector_attrib_value" ng-bind="datasetHead.factor__name"></div>
@@ -613,7 +615,7 @@ modaldata.qc.judge.motif_judge]"
   <li><a href="#allTarget" id="target-trigger" class="target-a" ng-click="setTarget('')" dc-tab>Get
     top putative targets</a></li>
   <li><a href="#peak" class="peak-a" dc-tab>Check a putative target</a></li>
-  <li><a href="#similar" class="similar-a" ng-click="setSimilar(inspector.id);" dc-tab>Find similar datasets</a></li>
+  <li><a href="#similar" class="similar-a" ng-click="setSimilar(inspector.id);" dc-tab>Find similar samples</a></li>
 </ul>
 <div id="toolTabContent" class="tab-content">
 <div class="tab-pane fade in active" id="qc-reports">
@@ -623,8 +625,9 @@ modaldata.qc.judge.motif_judge]"
       <thead>
       <tr>
         <th>QC</th>
-        <th ng-repeat="sample in table.sample" ng-bind="sample"></th>
-      </tr>
+<!--         <th ng-repeat="sample in table.sample" ng-bind="sample"></th>-->
+        <th ng-repeat="sample in table.sample">Sample</th>
+       </tr>
       <tbody>
       <tr>
         <td>Raw sequence median quality score</td>
@@ -680,7 +683,7 @@ modaldata.qc.judge.motif_judge]"
         <td class="conserv"> % Top 5k peaks Phastcon Conservation Profiles
         </td>
         <td colspan="{{table.treat_number+table.control_number}}" class="conserv">
-          <img ng-src="http://cistrome.org/dc/conserv?id={{ inspector.id }}" class="img-rounded conserv"> </img>
+          <img ng-src="http://dc2.cistrome.org/api/conserv?id={{inspector.id}}" class="img-rounded conserv"> </img>
         </td>
       </tr>
       </tbody>

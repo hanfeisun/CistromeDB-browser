@@ -32,13 +32,14 @@ dcApp.controller "VideoCtrl", ($sce) ->
   return
 
 dcApp.controller "filterController",
-  ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast, $modal, root) ->
+  ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast, $modal, root, root2) ->
     filterSentData =
       species: "all"
       cellinfos: "all"
       factors: "all"
-      hideincomplete: false
-      hideunvalidated: true
+      run: false
+      curated: false
+      completed: false
       keyword: ""
       clicked: null
       page: 1
@@ -56,18 +57,24 @@ dcApp.controller "filterController",
         "factors"
         "page"
       ]
-      hideincomplete: [
+      run: [
         "species"
         "cellinfos"
         "factors"
         "page"
       ]
-      hideunvalidated: [
+      completed: [
         "species"
         "cellinfos"
         "factors"
         "page"
       ]
+      curated: [
+        "species"
+        "cellinfos"
+        "factors"
+        "page"
+      ]      
       species: [
         "cellinfos"
         "factors"
@@ -151,12 +158,15 @@ dcApp.controller "filterController",
         "cellinfos"
         "factors"
       ]
-      checkLogin()
+      # checkLogin()
       $scope.inspectorHidden = true
       $scope.toolHidden = true
-      $scope.incompleteHidden = false
+
+      $scope.run = false
+      $scope.completed = false
+      $scope.curated = false
       $scope.datasetIDHidden = true
-      $scope.unvalidatedHidden = true
+
       $scope.factorFirst = false
       if typeof($window.sharedData) == "undefined"
         console.log ;
@@ -207,15 +217,19 @@ dcApp.controller "filterController",
       filterAjaxUpdate filterSentData, downstreamFilterMap[key]
       return
 
-    $scope.toggleIncompleteData = ->
-      $scope.incompleteHidden = not $scope.incompleteHidden
-      $scope.setFilter "hideincomplete", $scope.incompleteHidden
+    $scope.toggleRunData = ->
+      $scope.run = not $scope.run
+      $scope.setFilter "run", $scope.run
       return
 
-    $scope.toggleUnvalidatedData = ->
-      $scope.unvalidatedHidden = not $scope.unvalidatedHidden
-      $scope.setFilter "hideunvalidated", $scope.unvalidatedHidden
+    $scope.toggleCuratedData = ->
+      $scope.curated = not $scope.curated
+      $scope.setFilter "curated", $scope.curated
       return
+
+    $scope.toggleCompletedData = ->
+      $scope.completed = not $scope.completed
+      $scope.setFilter "completed", $scope.completed      
 
     $scope.selectFilterRow = (key, index) ->
       filterRowSelected[key] = index
@@ -317,7 +331,7 @@ dcApp.controller "filterController",
 
       
     $scope.setMotifHtml = (id) ->
-      $scope.currentMotifUrl = $sce.trustAsResourceUrl(root + "/motif_html/" + id + "/table.html");
+      $scope.currentMotifUrl = $sce.trustAsResourceUrl(root2 + "/motif_html/" + id + "/table.html");
       $scope.currentLogo = ""
       return
 #      $scope.currentMotifUrl = $sce.trustAsResourceUrl(root + "/motif_html/" + id + "/mdseqpos_index.html");
@@ -341,6 +355,7 @@ dcApp.controller "filterController",
         $scope.datasetHead = msg.treats[0]
         $scope.table = msg.qc.table
         $scope.inspector = msg
+        console.log $scope.inspector.qc.judge.fastqc
         $scope.id = id
         $scope.targetsAll = []
         $scope.targets = []
@@ -348,7 +363,7 @@ dcApp.controller "filterController",
         $scope.mygeneSpecies = mygeneMap[$scope.datasetHead.species__name]
         $scope.washuGenome = genomeMap[$scope.datasetHead.species__name]
         $scope.ucscGenome = genomeMap[$scope.datasetHead.species__name]
-        unless msg.status is "complete"
+        unless msg.status in ["completed", "run"]
           $scope.toolHidden = true
           $scope.columnCnt = 1
         else
@@ -362,7 +377,7 @@ dcApp.controller "filterController",
         $scope.showToast(0)
         blockUI.stop()
         return
-
+      console.log $scope.id
       inspectorService.get id
       return id
 

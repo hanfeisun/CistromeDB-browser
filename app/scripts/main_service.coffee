@@ -3,7 +3,7 @@ services = angular.module("dcApp.services", ["dcApp"])
 
 services.factory "filterService", ($http, root) ->
     filterSentData = undefined
-    url = root + "/dc/main_filter_ng"
+    url = root + "/main_filter_ng"
     doRequest = ->
       $http
         method: "GET"
@@ -23,7 +23,7 @@ services.factory "filterService", ($http, root) ->
 
 services.factory "inspectorService", ($http, root) ->
     doRequest = (id) ->
-      url = root + "/dc/inspector"
+      url = root + "/inspector"
       $http
         method: "GET"
         url: url
@@ -32,7 +32,7 @@ services.factory "inspectorService", ($http, root) ->
 
 
     getImg = (id) ->
-      url = root + "/dc/conserv"
+      url = root + "/conserv"
       $http.get(
         url,
         params:
@@ -52,14 +52,13 @@ services.factory "targetService",
   ($http, root) ->
     doRequest = (id, gene) ->
       gene = ""  unless gene
-      url = root + "/dc/putative_target_ng"
+      url = root + "/putative_target_ng"
       $http
         method: "GET"
         url: url
         params:
           id: id
           gene: gene
-
 
     return request: (id, gene) ->
       doRequest id, gene
@@ -68,7 +67,7 @@ services.factory "targetService",
 services.factory "motifService", ($http, root) ->
     doRequest = (id, gene) ->
       gene = ""  unless gene
-      url = root + "/dc/motif_ng"
+      url = root + "/motif_ng"
       $http
         method: "POST"
         url: url
@@ -82,7 +81,7 @@ services.factory "motifService", ($http, root) ->
 
 services.factory "similarService", ($http, root) ->
     doRequest = (id) ->
-      url = root + "/dc/similarity"
+      url = root + "/similarity"
       $http
         method: "GET"
         url: url
@@ -94,7 +93,7 @@ services.factory "similarService", ($http, root) ->
 
 services.factory "loginService", ($http, root) ->
     doRequest = ->
-      url = root + "/dc/accounts/check"
+      url = root + "/accounts/check"
       $http
         method: "GET"
         url: url
