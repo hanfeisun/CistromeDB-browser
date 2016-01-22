@@ -142,23 +142,23 @@ dcApp.controller "filterController",
       loginService.request().success (msg, status) ->
         if msg.status is "login"
           $scope.login_text = "LOGOUT " + msg.username
-          $scope.login_url = "http://cistrome.org/dc/accounts/logout"
+          $scope.login_url = root + "/accounts/logout"
         else
           $scope.login_text = "LOGIN"
-          $scope.login_url = "http://cistrome.org/dc/accounts/login"
+          $scope.login_url = root + "/accounts/login"
         return
 
       return
 
     initialize = ->
       $scope.login_text = "LOGIN"
-      $scope.login_url = "http://cistrome.org/dc/accounts/login"
+      $scope.login_url = "http://dc2.cistrome.org/api/accounts/login"
       filterAjaxUpdate filterSentData, [
         "species"
         "cellinfos"
         "factors"
       ]
-      # checkLogin()
+      checkLogin()
       $scope.inspectorHidden = true
       $scope.toolHidden = true
 

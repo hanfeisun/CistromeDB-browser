@@ -155,11 +155,11 @@ modaldata.qc.judge.motif_judge]"
     <div class="col-sm-12">
       <div class="btn-group">
         <a target="_blank"
-           ng-href="http://epigenomegateway.wustl.edu/browser/?genome={{washuGenome}}&datahub=http://cistrome.org/dc/datahub/{{modaldata.id}}&gftk=refGene,full"
+           ng-href="http://epigenomegateway.wustl.edu/browser/?genome={{washuGenome}}&datahub=http://dc2.cistrome.org/api/datahub/{{modaldata.id}}&gftk=refGene,full"
            ng-class="{disabled: toolHidden}" id="genomebrowser-bw" type="button"
            class="btn btn-default button-list">WashU Browser</a>
         <a target="_blank"
-           ng-href="http://cistrome.org/dc/hgtext/{{modaldata.id}}/?db={{ucscGenome}}"
+           ng-href="http://dc2.cistrome.org/api/hgtext/{{modaldata.id}}/?db={{ucscGenome}}"
            id="genomebrowser-bw" type="button"
            class="btn btn-default button-list">UCSC Browser</a>
 
@@ -177,13 +177,13 @@ modaldata.qc.judge.motif_judge]"
                 data-toggle="dropdown" ng-class="{disabled: toolHidden}">BED Peaks<span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
           <li id="file-bed"><a target="_blank"
-                               ng-href="http://cistrome.org/dc/file?type=bed&id={{modaldata.id}}">Download
+                               ng-href="http://dc2.cistrome.org/api/file?type=bed&id={{modaldata.id}}">Download
             to My Computer</a></li>
           <li>
             <form method="POST" action="http://cistrome.org/ap/tool_runner" id="bed_sender">
               <input type="HIDDEN" value="cistrome_cr" name="tool_id">
               <input type="HIDDEN" value="bed" name="data_type">
-              <input type="HIDDEN" value="http://cistrome.org/dc/file?type=bed&id={{modaldata.id}}" name="URL">
+              <input type="HIDDEN" value="http://dc2.cistrome.org/api/file?type=bed&id={{modaldata.id}}" name="URL">
               <input type="HIDDEN" value="{{modaldata.id}}_peaks.bed" name="name">
             </form>
             <a href ng-click="send_bed()">Send to Analysis Pipeline</a></li>
@@ -200,7 +200,7 @@ modaldata.qc.judge.motif_judge]"
             <form method="POST" action="http://cistrome.org/ap/tool_runner" id="bw_sender">
               <input type="HIDDEN" value="cistrome_cr" name="tool_id">
               <input type="HIDDEN" value="bigwig" name="data_type">
-              <input type="HIDDEN" value="http://cistrome.org/dc/file?type=bw&id={{modaldata.id}}" name="URL">
+              <input type="HIDDEN" value="http://dc2.cistrome.org/api/file?type=bw&id={{modaldata.id}}" name="URL">
               <input type="HIDDEN" value="{{modaldata.id}}.bw" name="name">
             </form>
             <a href ng-click="send_bw()">Send to Analysis Pipeline</a></li>
@@ -209,7 +209,7 @@ modaldata.qc.judge.motif_judge]"
 
       <div class="btn-group">
         <a id="putative-target-file" type="button" class="btn btn-default button-list"
-           href="http://cistrome.org/dc/file?type=pt&id={{modaldata.id}}">Putative
+           href="http://dc2.cistrome.org/api/file?type=pt&id={{modaldata.id}}">Putative
           Targets</a>
       </div>
     </div>
@@ -525,11 +525,11 @@ modaldata.qc.judge.motif_judge]"
     <div class="col-sm-12">
       <div class="btn-group">
         <a target="_blank"
-           ng-href="http://epigenomegateway.wustl.edu/browser/?genome={{washuGenome}}&datahub=http://cistrome.org/dc/datahub/{{inspector.id}}&gftk=refGene,full"
+           ng-href="http://epigenomegateway.wustl.edu/browser/?genome={{washuGenome}}&datahub=http://dc2.cistrome.org/api/datahub/{{inspector.id}}&gftk=refGene,full"
            ng-class="{disabled: toolHidden}" id="genomebrowser-bw" type="button"
            class="btn btn-default button-list">WashU Browser</a>
         <a target="_blank"
-           ng-href="http://cistrome.org/dc/hgtext/{{inspector.id}}/?db={{ucscGenome}}"
+           ng-href="http://dc2.cistrome.org/api/hgtext/{{inspector.id}}/?db={{ucscGenome}}"
            ng-class="{disabled: toolHidden}" id="genomebrowser-bw" type="button"
            class="btn btn-default button-list">UCSC Browser</a>
 
@@ -547,15 +547,15 @@ modaldata.qc.judge.motif_judge]"
                 data-toggle="dropdown" ng-class="{disabled: toolHidden}">BED Peaks<span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
           <li id="file-bed"><a class="download" target="_blank"
-                               ng-href="http://cistrome.org/dc/file?type=bed&id={{inspector.id}}">Download
+                               ng-href="http://dc2.cistrome.org/api/downloads/{{inspector.sign}}b">Download
             to My Computer</a></li>
           <li>
-            <form method="POST" action="http://cistrome.org/ap/tool_runner" id="bed_sender">
+          <form method="POST" action="http://cistrome.org/ap/tool_runner" id="bed_sender">
               <input type="HIDDEN" value="cistrome_cr" name="tool_id">
               <input type="HIDDEN" value="bed" name="data_type">
-              <input type="HIDDEN" value="http://cistrome.org/dc/file?type=bed&id={{inspector.id}}" name="URL">
+              <input type="HIDDEN" value="http://dc2.cistrome.org/api/file?type=bed&id={{inspector.id}}" name="URL">
               <input type="HIDDEN" value="{{inspector.id}}_peaks.bed" name="name">
-            </form>
+          </form>
             <a href ng-click="send_bed()">Send to Analysis Pipeline</a></li>
         </ul>
       </div>
@@ -570,7 +570,7 @@ modaldata.qc.judge.motif_judge]"
             <form method="POST" action="http://cistrome.org/ap/tool_runner" id="bw_sender">
               <input type="HIDDEN" value="cistrome_cr" name="tool_id">
               <input type="HIDDEN" value="bigwig" name="data_type">
-              <input type="HIDDEN" value="http://cistrome.org/dc/file?type=bw&id={{inspector.id}}" name="URL">
+              <input type="HIDDEN" value="http://dc2.cistrome.org/api/file?type=bw&id={{inspector.id}}" name="URL">
               <input type="HIDDEN" value="{{inspector.id}}.bw" name="name">
             </form>
             <a href ng-click="send_bw()">Send to Analysis Pipeline</a></li>
@@ -579,7 +579,7 @@ modaldata.qc.judge.motif_judge]"
 
       <div class="btn-group">
         <a id="putative-target-file" type="button" class="btn btn-default button-list"
-           href="http://cistrome.org/dc/file?type=pt&id={{inspector.id}}" ng-class="{disabled: toolHidden}">Putative
+            href="http://dc2.cistrome.org/api/downloads/{{ inspector.sign }}p" ng-class="{disabled: toolHidden}">Putative
           Targets</a>
 
 
@@ -788,10 +788,10 @@ modaldata.qc.judge.motif_judge]"
             <td ng-bind="target.score"></td>
             <td ng-bind="target.coordinate"></td>
             <td><a target="_blank"
-                   ng-href="http://epigenomegateway.wustl.edu/browser/?genome={{washuGenome}}&datahub=http://cistrome.org/dc/datahub/{{inspector.id}}&gftk=refGene,full&coordinate={{target.visual_coordinate}}"
+                   ng-href="http://epigenomegateway.wustl.edu/browser/?genome={{washuGenome}}&datahub=http://dc2.cistrome.org/api/datahub/{{inspector.id}}&gftk=refGene,full&coordinate={{target.visual_coordinate}}"
                    class="btn btn-default btn-xs">WashU</a>
               <a target="_blank"
-                 ng-href="http://cistrome.org/dc/hgtext/{{inspector.id}}/?db={{ucscGenome}}&position={{target.visual_coordinate | escape}}"
+                 ng-href="http://dc2.cistrome.org/api/hgtext/{{inspector.id}}/?db={{ucscGenome}}&position={{target.visual_coordinate | escape}}"
                  class="btn btn-default btn-xs">UCSC</a></td>
 
           </tr>
@@ -846,10 +846,10 @@ modaldata.qc.judge.motif_judge]"
         <td ng-bind="target.score"></td>
         <td ng-bind="target.coordinate"></td>
         <td><a target="_blank" class="external"
-               ng-href="http://epigenomegateway.wustl.edu/browser/?genome={{washuGenome}}&datahub=http://cistrome.org/dc/datahub/{{inspector.id}}&gftk=refGene,full&coordinate={{target.visual_coordinate}}"
+               ng-href="http://epigenomegateway.wustl.edu/browser/?genome={{washuGenome}}&datahub=http://dc2.cistrome.org/api/datahub/{{inspector.id}}&gftk=refGene,full&coordinate={{target.visual_coordinate}}"
                class="btn btn-default btn-xs">WashU</a>
           <a target="_blank" class="external"
-             ng-href="http://cistrome.org/dc/hgtext/{{inspector.id}}/?db={{ucscGenome}}&position={{target.visual_coordinate | escape}}"
+             ng-href="http://dc2.cistrome.org/api/hgtext/{{inspector.id}}/?db={{ucscGenome}}&position={{target.visual_coordinate | escape}}"
              class="btn btn-default btn-xs">UCSC</a></td>
 
       </tr>

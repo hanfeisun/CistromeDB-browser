@@ -34,22 +34,17 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="http://cistrome.org/db/">Cistrome Data Browser</a>
+        <a class="navbar-brand" href="http://dc2.cistrome.org">Cistrome Data Browser</a>
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
           <li><a href="#/">Home</a></li>
-          <li><a href="#about">About</a></li>
-	        <li><a href="#stat">Site Statistics</a></li>
-          <li><a href="#tutorial">Tutorial</a></li>
-
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
           <li><a ng-href="{{login_url}}"><span id="account-status" ng-bind="login_text"></span><span
             class="glyphicon glyphicon-chevron-right"></span></a></li>
         </ul>
-
       </div>
     </div>
   </nav>
@@ -94,7 +89,6 @@
 <script src="bower_components/ngtoast/dist/ngToast.js"></script>
 <script src="bower_components/videogular/videogular.js"></script>
 <script src="bower_components/waypoints/waypoints.js"></script>
-<script src="bower_components/SHA-1/sha1.js"></script>
 <script src="bower_components/angulartics/src/angulartics.js"></script>
 <script src="bower_components/angulartics/src/angulartics-adobe.js"></script>
 <script src="bower_components/angulartics/src/angulartics-chartbeat.js"></script>
@@ -128,21 +122,6 @@
 <script src="scripts/controllers/main_controller.js"></script>
 <script src="scripts/controllers/test.js"></script>
 <!-- endbuild -->
-<!-- Piwik -->
-<script type="text/javascript">
-  var _paq = _paq || [];
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    var u="//cistrome.org/~qqin/piwik/";
-    _paq.push(['setTrackerUrl', u+'piwik.php']);
-    _paq.push(['setSiteId', 2]);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-  })();
-</script>
-<noscript><p><img src="//cistrome.org/~qqin/piwik/piwik.php?idsite=2" style="border:0;" alt="" /></p></noscript>
-<!-- End Piwik Code -->
 </body>
 
 </html>
