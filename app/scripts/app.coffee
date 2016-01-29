@@ -5,6 +5,7 @@ dcApp = angular.module("dcApp", [
   "angucomplete-alt"
   "ngAnimate"
   "ngSanitize"
+  "LocalStorageModule"
   "ngToast"
   "ngRoute"
   "ui.bootstrap"
@@ -15,6 +16,9 @@ dcApp = angular.module("dcApp", [
   "com.2fdevs.videogular.plugins.poster",
   "com.2fdevs.videogular.plugins.buffering"  
 ])
+
+.config (localStorageServiceProvider) ->
+  localStorageServiceProvider.setPrefix('ls');
 
 .config (blockUIConfig) ->
   blockUIConfig.autoBlock = false
@@ -45,7 +49,7 @@ dcApp = angular.module("dcApp", [
     })
     .when('/test', {
       templateUrl: 'views/test.html'
-    })
+    })  
 .constant("root", "http://dc2.cistrome.org/api")
 .constant("root2", "http://dc2.cistrome.org/")
 

@@ -10,14 +10,6 @@
 
 dcApp = angular.module("dcApp")
 
-dcApp.controller "ModalInstanceCtrl", ($scope, $modalInstance, modaldata) ->
-  $scope.modaldata = modaldata;
-
-  $scope.cancel = ->
-    $modalInstance.dismiss('cancel');
-  return
-
-
 dcApp.controller "VideoCtrl", ($sce) ->
   this.config = 
     autoHide: false
@@ -31,8 +23,114 @@ dcApp.controller "VideoCtrl", ($sce) ->
     
   return
 
+
+dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, localStorageService, blockUI, ngToast, $http, $window)->
+  # $scope.items = []
+
+  $scope.items = items
+  angular.forEach $scope.items, (value, key) ->
+    $scope.items[key].selected = true
+
+  $scope.allstatus = true;
+
+  $scope.selectAll = ->
+
+    angular.forEach $scope.items, (value, key)->
+      $scope.items[key].selected = !$scope.allstatus
+      return
+
+    $scope.allstatus = !$scope.allstatus
+
+  $scope.showToast = (status) ->
+    content = [
+      'species not consistent'
+      'loading sample number limit 10'
+      'clear all samples'
+      'delete one sample from batch view'      
+    ]
+    TYPE = [
+      'warning'
+      'warning'
+      'success'
+      'success'
+    ]
+    ngToast.create(
+      content: content[status]
+      class: TYPE[status]
+      dismissOnTimeout: true
+      #timeout: 800
+      dismissButton: true
+      dismissOnClick: true
+    )
+    return  
+
+  batchdcInStore = localStorageService.get 'batchdc'
+  $scope.batchdc = batchdcInStore || {}
+
+  $scope.$watch 'batchdc', ( ->
+    localStorageService.set('batchdc', $scope.batchdc)
+    return
+    ),true
+  $scope.cancel = ->
+    $uibModalInstance.dismiss 'cancel'
+
+  $scope.clear = ->
+    $scope.batchdc = {}  
+    $scope.items = {} 
+    $scope.showToast 2   
+
+  $scope.deleteone = (k) ->
+    $scope.showToast 3
+    delete $scope.batchdc[k]
+    delete $scope.items[k]
+
+
+  $scope.gbSubmit = ->
+    ids = []
+    sps = []
+    angular.forEach $scope.items, ((v,k)->
+      if v.selected
+        ids.push k
+        sps.push v[2]
+      return
+    )
+
+    if ids.length > 10
+      $scope.showToast 1  
+      return
+
+    spset = new Set sps  
+    
+    if spset.size >= 2
+      $scope.showToast 0
+      return
+
+    if sps[0] == 'Mus musculus'
+      sp = 'Mouse'
+    else
+      sp = 'Human'
+
+    conf = 
+      method: "POST"
+      data: 
+        ids: ids
+        species: sp
+      url: 'http://dc2.cistrome.org/api/batchview/',
+      headers:
+        'Content-Type': 'application/json'
+
+    blockUI.start()            
+    $http(conf).success((data)->
+      blockUI.stop()
+      $window.open data.batchurl
+    ).error (data)->
+      console.log 'error'
+
+  return
+
+
 dcApp.controller "filterController",
-  ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast, $modal, root, root2) ->
+  ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast,root, root2, localStorageService,$uibModal) ->
     filterSentData =
       species: "all"
       cellinfos: "all"
@@ -43,6 +141,33 @@ dcApp.controller "filterController",
       keyword: ""
       clicked: null
       page: 1
+
+    batchdcInStore = localStorageService.get 'batchdc'
+    $scope.batchdc = batchdcInStore || {}
+
+    $scope.$watch 'batchdc', ( ->
+      localStorageService.set('batchdc', $scope.batchdc)
+      return
+      ),true
+
+    $scope.openbatch = false;
+
+
+    $scope.open = (size) ->
+      modalInstance = $uibModal.open(
+        animation: true,        
+        templateUrl: "myModalContent.html"
+        controller: "ModalInstanceCtrl"
+        size: size
+        resolve: 
+          items: ->                             
+            return $scope.batchdc
+        )
+      # modalInstance.result.then ((selected)->
+      #   $scope.selected = selected
+      #   ), ->
+      #   console.log 'error'
+
 
     inspectorRowSelected = -1
     filterRowSelected =
@@ -276,20 +401,15 @@ dcApp.controller "filterController",
         blockUI.stop()
         $scope.showToast(0)
         return
-
       return
 
-    # $scope.open = (id, size)->
-    #   modalIns = $modal.open(
-    #     templateUrl: "dcModal.html"
-    #     controller: "ModalInstanceCtrl"
-    #     size: size
-    #     resolve:
-    #       modaldata: ->
-    #         return $scope.moaldata;
-    #   )
-    #   #      modalIns.result.then();
-    #   return
+    $scope.sendSelect = (s)->
+      if s
+        $scope.batchdc[$scope.inspector.id] = [$scope.inspector.treats[0].unique_id, $scope.inspector.treats[0].name, $scope.speciesbatch]
+        $scope.showToast(3)        
+      else
+        delete $scope.batchdc[$scope.inspector.id]
+        $scope.showToast(4)                
 
     #scope.setMoal = (id, size) ->
       # blockUI.start()
@@ -314,9 +434,15 @@ dcApp.controller "filterController",
       content = [
         'loading failure'
         'loading successfully'
+        'loading qc failure, not processed yet'
+        'loading into batch view list'
+        'delete one sample from batch view'
       ]
       TYPE = [
         'warning'
+        'success'
+        'warning'
+        'success'
         'success'
       ]
       ngToast.create(
@@ -347,18 +473,34 @@ dcApp.controller "filterController",
 #        blockUI.stop()
 #        $scope.showToast(0)
 #      return
+    $scope.model = {selected: false}
 
-    $scope.setInspector = (id) ->
+    $scope.setInspector = (id, species) ->
       blockUI.start()
+      if $scope.batchdc.hasOwnProperty id 
+        $scope.model.selected = true
+      else      
+        $scope.model.selected = false
+     
       inspectorService.request(id).success((msg, status) ->
+
+
+
         $scope.inspectorHidden = false
         $scope.datasetHead = msg.treats[0]
         $scope.table = msg.qc.table
         $scope.inspector = msg
-        console.log $scope.inspector.qc.judge.fastqc
+        $scope.speciesbatch = species
+
+        if $scope.inspector.qc.judge == undefined
+          $scope.showToast 2
+
         $scope.id = id
         $scope.targetsAll = []
         $scope.targets = []
+
+
+
         $scope.qcTable = $sce.trustAsHtml(msg.qcTable)
         $scope.mygeneSpecies = mygeneMap[$scope.datasetHead.species__name]
         $scope.washuGenome = genomeMap[$scope.datasetHead.species__name]
@@ -377,7 +519,6 @@ dcApp.controller "filterController",
         $scope.showToast(0)
         blockUI.stop()
         return
-      console.log $scope.id
       inspectorService.get id
       return id
 
@@ -447,6 +588,5 @@ dcApp.filter "motifZscore", ->
 dcApp.filter "escape", ->
   escape = (d) ->
     encodeURI d
-
   escape
 

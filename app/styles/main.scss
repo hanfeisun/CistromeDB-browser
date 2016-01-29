@@ -449,23 +449,44 @@ img.conserv {
     max-height: 400px; // your preference
 }
  
-// @media (min-width: 1200px) {
-//   .videogular-container {
-//     width: 1170px;
-//     height: 658.125px;
-//   }
-// }
- 
-// @media (min-width: 992px) and (max-width: 1199px) {
-//   .videogular-container {
-//     width: 940px;
-//     height: 528.75px;
-//   }
-// }
- 
-// @media (min-width: 768px) and (max-width: 991px) {
-//   .videogular-container {
-//     width: 728px;
-//     height: 409.5px;
-//   }
-// }
+
+@mixin batch {
+  width: 1.25em;
+  text-align: center;  
+  position: fixed;
+  margin: 0;
+  left: auto;
+  right: 30px;
+  bottom: 120px;
+}
+
+.batch-open-button {
+  @include batch;
+}
+.closebatch {
+  background: white;
+  color: gray;
+  font-size: 35px;
+  top: 80px;
+}
+
+label.cancel-label:hover {
+  background-color: blue;
+  font-size:120%;
+  cursor: pointer;
+}
+
+.openbatch {
+  top: 75px;
+  font-size: 45px;  
+  color: black;
+  text-shadow: white 5px 3px 3px;  
+  background-color: rgb(213,213,213);
+}
+
+div.batch-list {
+  @include batch;
+}
+
+
+
