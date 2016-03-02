@@ -251,9 +251,9 @@
                                 <div class="circle-col">
                                     <div class="circle" ng-class="{green: inspector.qc.judge.dhs, red: !inspector.qc.judge.dhs}" data-toggle="tooltip" data-html="true" data-placement="auto" title="<strong class='text-primary'>Regulatory Region:</strong><br>  'DNase-seq union hypersensitive sites' (DHS) overlapped ratio in top 5000 peaks " dc-tooltip></div>
                                 </div>
-                                <div class="circle-col">
-                                    <div class="circle" ng-class="{true: 'green', false: 'red', NA: 'grey'}[inspector.qc.judge.motif_judge]" data-toggle="tooltip" data-html="true" data-placement="auto" title="<strong class='text-primary'>Motif:</strong><br> Enrichment of corresponding motifs in peaks" dc-tooltip></div>
-                                </div>
+                                <!-- <div class="circle-col"> -->
+                                    <!-- <div class="circle" ng-class="{true: 'green', false: 'red', NA: 'grey'}[inspector.qc.judge.motif_judge]" data-toggle="tooltip" data-html="true" data-placement="auto" title="<strong class='text-primary'>Motif:</strong><br> Enrichment of corresponding motifs in peaks" dc-tooltip></div> -->
+                                <!-- </div> -->
                             </div>
                         </div>
                         <div class="row inspector-sub">
@@ -322,11 +322,12 @@
                     <div class="col-sm-12">
                         <ul class="nav nav-tabs nav-justified" role="tablist" id="toolTab">
                             <li class="active"><a href="#qc-reports" class="quality-a" dc-tab>QC reports</a></li>
-                            <li ng-hide="inspector.qc.judge.motif_judge=='NA'"><a href="#qc-motif" class="motif-a" ng-click="setMotifHtml(inspector.id)" dc-tab>QC motifs</a></li>
+                            <!-- <li ng-hide="inspector.qc.judge.motif_judge=='NA'"><a href="#qc-motif" class="motif-a" ng-click="setMotifHtml(inspector.id)" dc-tab>QC motifs</a></li> -->
+                            <li ng-hide="!inspector.motif"><a href="#qc-motif" class="motif-a" ng-click="setMotifHtml(inspector.id)" dc-tab>QC motifs</a></li>
                             <li><a href="#allTarget" id="target-trigger" class="target-a" ng-click="setTarget('')" dc-tab>Get
     top putative targets</a></li>
                             <li><a href="#peak" class="peak-a" dc-tab>Check a putative target</a></li>
-                            <li><a href="#similar" class="similar-a" ng-click="setSimilar(inspector.id);" dc-tab>Find similar samples</a></li>
+                            <li ng-show="false"><a href="#similar" class="similar-a"  ng-click="setSimilar(inspector.id);" dc-tab>Find similar samples</a></li>
                         </ul>
                         <div id="toolTabContent" class="tab-content">
                             <div class="tab-pane fade in active" id="qc-reports">

@@ -72,7 +72,7 @@ module.exports = function (grunt) {
 
         // debug: true,
         args: {
-          seleniumServerJar: '/usr/local/lib/node_modules/protractor/selenium/selenium-server-standalone-2.45.0.jar',
+          seleniumServerJar: '/usr/local/lib/node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
           chromeDriver: '/usr/local/lib/node_modules/protractor/selenium/chromedriver'
         }
       },
