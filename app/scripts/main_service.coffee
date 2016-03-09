@@ -102,3 +102,8 @@ services.factory "loginService", ($http, root) ->
     return request: ->
       doRequest()
 
+
+services.factory "batchdc", (localStorageService)->
+  return localStorageService.get 'batchdc'
+
+

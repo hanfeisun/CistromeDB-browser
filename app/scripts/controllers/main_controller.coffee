@@ -11,23 +11,22 @@
 dcApp = angular.module("dcApp")
 
 dcApp.controller "VideoCtrl", ($sce) ->
-  this.config = 
+  this.config =
     autoHide: false
     autoHideTime: 3000
-    autoPlay: false  
+    autoPlay: false
     sources: [
       src:$sce.trustAsResourceUrl "http://cistrome.org/~qqin/cistromedb.mp4"
-      type: "video/mp4"      
+      type: "video/mp4"
     ]
     theme: "bower_components/videogular-themes-default/videogular.css"
-    
+
   return
 
 
-dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, localStorageService, blockUI, ngToast, $http, $window)->
-  # $scope.items = []
-
+dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, blockUI, ngToast, $http, $window, batchdc, localStorageService)->
   $scope.items = items
+
   angular.forEach $scope.items, (value, key) ->
     $scope.items[key].selected = true
 
@@ -38,7 +37,6 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, localSt
     angular.forEach $scope.items, (value, key)->
       $scope.items[key].selected = !$scope.allstatus
       return
-
     $scope.allstatus = !$scope.allstatus
 
   $scope.showToast = (status) ->
@@ -46,7 +44,7 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, localSt
       'species not consistent'
       'loading sample number limit 10'
       'clear all samples'
-      'delete one sample from batch view'      
+      'delete one sample from batch view'
     ]
     TYPE = [
       'warning'
@@ -62,28 +60,41 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, localSt
       dismissButton: true
       dismissOnClick: true
     )
-    return  
+    return
 
-  batchdcInStore = localStorageService.get 'batchdc'
-  $scope.batchdc = batchdcInStore || {}
-
+  $scope.batchdc = {}
   $scope.$watch 'batchdc', ( ->
     localStorageService.set('batchdc', $scope.batchdc)
     return
     ),true
+
   $scope.cancel = ->
     $uibModalInstance.dismiss 'cancel'
 
+  $scope.ok = ->
+    $uibModalInstance.close $scope.batchdc
+
   $scope.clear = ->
-    $scope.batchdc = {}  
-    $scope.items = {} 
-    $scope.showToast 2   
+    angular.forEach $scope.items, ((v, k) ->
+      delete $scope.batchdc[k]
+      delete batchdc[k]
+      delete $scope.items[k]
+      $scope.model.selected = false
+      return
+    )
+
+    $scope.showToast 2
+    return
 
   $scope.deleteone = (k) ->
     $scope.showToast 3
     delete $scope.batchdc[k]
+    delete batchdc[k]
     delete $scope.items[k]
-
+    # share between parent scope and popup window scope
+    if (k == $scope.inspector.id)
+      $scope.model.selected = false
+    return
 
   $scope.gbSubmit = ->
     ids = []
@@ -96,11 +107,11 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, localSt
     )
 
     if ids.length > 10
-      $scope.showToast 1  
+      $scope.showToast 1
       return
 
-    spset = new Set sps  
-    
+    spset = new Set sps
+
     if spset.size >= 2
       $scope.showToast 0
       return
@@ -110,16 +121,16 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, localSt
     else
       sp = 'Human'
 
-    conf = 
+    conf =
       method: "POST"
-      data: 
+      data:
         ids: ids
         species: sp
       url: 'http://dc2.cistrome.org/api/batchview/',
       headers:
         'Content-Type': 'application/json'
 
-    blockUI.start()            
+    blockUI.start()
     $http(conf).success((data)->
       blockUI.stop()
       $window.open data.batchurl
@@ -130,7 +141,7 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, localSt
 
 
 dcApp.controller "filterController",
-  ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast,root, root2, localStorageService,$uibModal) ->
+  ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast,root, root2, $uibModal, batchdc, localStorageService) ->
     filterSentData =
       species: "all"
       cellinfos: "all"
@@ -142,32 +153,43 @@ dcApp.controller "filterController",
       clicked: null
       page: 1
 
-    batchdcInStore = localStorageService.get 'batchdc'
-    $scope.batchdc = batchdcInStore || {}
+    $scope.inspector =
+      id: 'no'
 
+    $scope.batchdc = batchdc || {}
     $scope.$watch 'batchdc', ( ->
       localStorageService.set('batchdc', $scope.batchdc)
       return
       ),true
 
+    $scope.sendSelect = (s)->
+      if s
+        $scope.batchdc[$scope.inspector.id] = [$scope.inspector.treats[0].unique_id, $scope.inspector.treats[0].name, $scope.speciesbatch]
+        batchdc[$scope.inspector.id] = [$scope.inspector.treats[0].unique_id, $scope.inspector.treats[0].name, $scope.speciesbatch]
+        $scope.showToast(3)
+      else
+        delete $scope.batchdc[$scope.inspector.id]
+        delete batchdc[$scope.inspector.id]
+        $scope.showToast(4)
+
     $scope.openbatch = false;
-
-
     $scope.open = (size) ->
       modalInstance = $uibModal.open(
-        animation: true,        
+        animation: true,
         templateUrl: "myModalContent.html"
         controller: "ModalInstanceCtrl"
         size: size
-        resolve: 
-          items: ->                             
+        scope: $scope
+        resolve:
+          items: ->
             return $scope.batchdc
         )
-      # modalInstance.result.then ((selected)->
-      #   $scope.selected = selected
+      # modalInstance.result.then ((result)->
+      #   $scope.batchdc = result
+      #   return
       #   ), ->
       #   console.log 'error'
-
+      #   return
 
     inspectorRowSelected = -1
     filterRowSelected =
@@ -199,7 +221,7 @@ dcApp.controller "filterController",
         "cellinfos"
         "factors"
         "page"
-      ]      
+      ]
       species: [
         "cellinfos"
         "factors"
@@ -354,7 +376,7 @@ dcApp.controller "filterController",
 
     $scope.toggleCompletedData = ->
       $scope.completed = not $scope.completed
-      $scope.setFilter "completed", $scope.completed      
+      $scope.setFilter "completed", $scope.completed
 
     $scope.selectFilterRow = (key, index) ->
       filterRowSelected[key] = index
@@ -373,7 +395,7 @@ dcApp.controller "filterController",
     $scope.setTarget = (gene) ->
       if gene['title'] != undefined
         genes = gene.title
-      else 
+      else
         genes = gene
       blockUI.start()
       targetService.request($scope.id, genes).success((msg, status) ->
@@ -403,13 +425,6 @@ dcApp.controller "filterController",
         return
       return
 
-    $scope.sendSelect = (s)->
-      if s
-        $scope.batchdc[$scope.inspector.id] = [$scope.inspector.treats[0].unique_id, $scope.inspector.treats[0].name, $scope.speciesbatch]
-        $scope.showToast(3)        
-      else
-        delete $scope.batchdc[$scope.inspector.id]
-        $scope.showToast(4)                
 
     #scope.setMoal = (id, size) ->
       # blockUI.start()
@@ -455,7 +470,7 @@ dcApp.controller "filterController",
       )
       return
 
-      
+
     $scope.setMotifHtml = (id) ->
       $scope.currentMotifUrl = $sce.trustAsResourceUrl(root2 + "/motif_html/" + id + "/table.html");
       $scope.currentLogo = ""
@@ -477,11 +492,11 @@ dcApp.controller "filterController",
 
     $scope.setInspector = (id, species) ->
       blockUI.start()
-      if $scope.batchdc.hasOwnProperty id 
+      if $scope.batchdc.hasOwnProperty id
         $scope.model.selected = true
-      else      
+      else
         $scope.model.selected = false
-     
+
       inspectorService.request(id).success((msg, status) ->
 
 

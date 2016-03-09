@@ -9,12 +9,11 @@ dcApp = angular.module("dcApp", [
   "ngToast"
   "ngRoute"
   "ui.bootstrap"
-  "ngSanitize",
   "com.2fdevs.videogular",
   "com.2fdevs.videogular.plugins.controls",
   "com.2fdevs.videogular.plugins.overlayplay",
   "com.2fdevs.videogular.plugins.poster",
-  "com.2fdevs.videogular.plugins.buffering"  
+  "com.2fdevs.videogular.plugins.buffering"
 ])
 
 .config (localStorageServiceProvider) ->
@@ -49,9 +48,6 @@ dcApp = angular.module("dcApp", [
     })
     .when('/test', {
       templateUrl: 'views/test.html'
-    })  
+    })
 .constant("root", "http://dc2.cistrome.org/api")
 .constant("root2", "http://dc2.cistrome.org/")
-
-
-
