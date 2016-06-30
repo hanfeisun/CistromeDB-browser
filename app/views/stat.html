@@ -20,6 +20,7 @@
     <div class="row">
         <div class="col-sm-12" id="widgetIframe"><iframe width="100%" height="250" src="http://compbio3.tongji.edu.cn/piwik/index.php?module=Widgetize&action=iframe&columns[]=nb_uniq_visitors&columns[]=nb_actions&widget=1&moduleToWidgetize=VisitsSummary&actionToWidgetize=getEvolutionGraph&idSite=2&period=range&date=2015-05-29,today&disableLink=1&widget=1" scrolling="no" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>
     </div>-->
+    <h3>Cistrome Data Browser Samples statistics</h3>
     <div class="row">
         <div class="col-sm-12">
         <div class="panel panel-default">
@@ -27,36 +28,41 @@
         <thead>
         <tr class="text-center">
           <th class="text-center">Species</th>
-          <th class="text-center">Number of completed datasets</th>
-          <th class="text-center">Number of all datasets</th>
+          <th class="text-center">Human saplens</th>
+          <th class="text-center">Mouse musculus</th>
         </tr>
         </thead>
         <tbody>
             
         <tr>
-          <td>Human</td>
-          <td>7087</td>
-          <td>8726</td>
+          <td>TF</td>
+          <td>5837</td>
+          <td>4629</td>
         </tr>
         <tr>
-          <td>Mouse</td>
-          <td>4216</td>
-          <td>5837</td>
+          <td>Histone</td>
+          <td>5557</td>
+          <td>4973</td>
         </tr>  
+        <tr>
+          <td>DNase</td>
+          <td>963</td>
+          <td>227</td>
+        </tr>
+        <tr>
+          <td>Other</td>
+          <td>851</td>
+          <td>442</td>
+        </tr>
                 <tr>
           <td>Total</td>
-          <td>11303</td>
-          <td>14563</td>
+          <td>13208</td>
+          <td>10271</td>
         </tr>        
         </tbody>
         </table>
-      <div class="panel-footer">
-            <dl>
-              <dt>Note: </dt>
-              <dd>A dataset: Multiple replicate ChIP samples and control samples. Completed datasets: All the ChIP-seq datasets collected from GEO and ENCODE site. All datasets: The ones we have processed through our ChIP-seq pipeline as of November 2014.</dd>
-            </dl>    
-      </div>
     </div>
+    Completed datasets: All the ChIP-seq datasets collected from GEO and ENCODE site.
     </div>    
     </div>
     <div class="row">
@@ -75,7 +81,8 @@
     var chart = c3.generate({
         data: {
             x: 'Date',
-            url: 'evolution_piwik.csv'
+            url: 'evolution_piwik.csv',
+            xFormat: '%m/%d/%Y'
         },
         axis: {
             x: {
@@ -91,6 +98,6 @@
 <!-- http://compbio3.tongji.edu.cn/piwik/index.php?module=API&method=API.get&format=JSON&idSite=2&period=day&date=2015-05-29,today&filter_limit=false&disable_queued_filters=1&format_metrics=1&period=day&expanded=1&token_auth=6481c3930e8b270fe0f97f1f47ae5e40&filter_limit=100-->
 <!-- http://compbio3.tongji.edu.cn/piwik/index.php?module=API&method=API.get&format=CSV&idSite=2&period=day&date=2015-05-29,today&filter_limit=false&disable_queued_filters=1&format_metrics=1&period=day&expanded=1&translateColumnNames=1&language=en&token_auth=6481c3930e8b270fe0f97f1f47ae5e40&filter_limit=101&token_auth=6481c3930e8b270fe0f97f1f47ae5e40&filter_limit=100 -->
 <!-- <div class="container">
-    <img src="http://compbio3.tongji.edu.cn/piwik/index.php?module=API&method=ImageGraph.get&idSite=2&apiModule=VisitsSummary&a&apiAction=get&token_auth=anonymous&graphType=evolution&period=day&date=2015-05-01,today&width=auto&height=250&colors=FF0000">
+    <img src="http://cistrome.org/~qqin/piwik/index.php?module=API&method=ImageGraph.get&idSite=2&apiModule=VisitsSummary&a&apiAction=get&token_auth=anonymous&graphType=evolution&period=day&date=2015-05-01,today&width=auto&height=250&colors=FF0000">
 </div>-->
 

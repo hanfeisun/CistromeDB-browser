@@ -25,6 +25,8 @@ dcApp.controller "VideoCtrl", ($sce) ->
 
 
 dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, blockUI, ngToast, $http, $window, batchdc, localStorageService)->
+
+
   $scope.items = items
 
   angular.forEach $scope.items, (value, key) ->

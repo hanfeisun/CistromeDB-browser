@@ -1,0 +1,71 @@
+<div class="container">  <!--aboutBox -->
+	<div ng-controller="VideoCtrl as controller" class="videogular-container">
+		<videogular vg-theme="controller.config.theme"  vg-player-ready="controller.onPlayerReady($API)">
+			<vg-media vg-src="controller.config.sources">
+			</vg-media>
+			<vg-controls>
+				<vg-play-pause-button></vg-play-pause-button>
+				<vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
+				<vg-scrub-bar>
+					<vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+				</vg-scrub-bar>
+				<vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
+				<vg-volume>
+					<vg-mute-button></vg-mute-button>
+					<vg-volume-bar></vg-volume-bar>
+				</vg-volume>
+				<vg-fullscreen-button></vg-fullscreen-button>
+			</vg-controls>
+ 
+	<vg-overlay-play></vg-overlay-play>
+	<vg-buffering></vg-buffering>
+	</videogular>
+	</div>
+
+</br>
+</br>
+<div class="container">
+<h1>Quick Start</h1>
+
+<h1>Function 1. search your interesting assay, cell or tissue</h1>
+<img src="1.png" class="img-responsive"></img>
+<h3>Cistrome DB contains two options for searching the database.</h3>
+
+<div>
+<li>One is to select assay, species or cell line, cell source </li>
+<l1>The other is based on advanced searching box. </li>
+</div>
+
+<h1>Function 2. Data download and individual signal browse</h1>
+<img src="2.png" class="img-responsive"></img>
+
+<h1>Function 3. Quality view</h1>
+<img src="3.png" class="img-responsive"></img>
+<div>
+<li>Details explaination see in <a href="http://cistrome.org/chilin/_downloads/instructions.pdf">ChiLin document</a>
+</div>
+
+<h1>Function 4. Batch samples genome browser display</h1>
+<img src="7.png" class="img-responsive"></img>
+
+<div>
+<h3>Note: web browser should allow redirection to external link</h3>
+<li>Click on add to batch view list for multiple samples</li>
+<li>Click on the square on the right bottom</li>
+<li>Choose interesting samples of the same species</li>
+<li>Send to genome browser</li>
+</div>
+
+<h1>Function 5. get ChIP-seq putative factor and search interesting targets</h1>
+<div>
+<img src="6.png" class="img-responsive"></img>
+</div>
+
+<div>
+<h3>Note: web browser should allow redirection to external link</h3>
+<li>Enter the gene symbols and wait to browser to auto-complete the name</li>
+<li>Click on the desired symbols</li>
+</div>
+</div>
+
+</div>

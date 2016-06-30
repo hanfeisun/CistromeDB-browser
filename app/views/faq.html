@@ -1,0 +1,59 @@
+<div class="container">
+
+
+<div class="row">
+
+<div class="col-sm-1"> 
+</div>
+<div class="col-sm-10"> 
+<h1>FAQ:</h1>
+
+<div>
+<h3>1. Why Cistrome DB?</h3>
+To our knowledge, Cistrome DB is so far the most comprehensive database for curated and analyzed multi-resource ChIP-seq and DNase-seq data.
+Cistrome DB is valuable resource for transcriptional and epigenetic gene regulation study. It contains majority of currently available TFs and histone ChIP-seq data. Transcriptional regulation is a complex process, which is controlled by thousands of transcription factors, cofactors and chromatin regulators. With the Cistrome DB data, user can systematically investigate gene expression programs and understand transcriptional regulation.  Divergent cell resource and experiment conditional can be used for tissue specific or developmental study. Besides, Cistrome DB can also be a quality control guideline for ChIP-seq and DNase-seq experiments.
+</div>
+
+<div>
+<h3>2. What’s in Cistrome DB ?</h3>
+we collected about 24,000 (until 01/01/2016) samples, processed them with a uniform pipeline, and present the analysis results of each sample. In addition, we also provide functions for analysis and visualisation of these datasets.
+Cistrome DB provides four layers of contents. First, it comprises manually curated information for each ChIP-seq and DNase-seq data, including species, factors, biological source, publication, and so on. Second, it provides the analysis results of each public ChIP-seq data from human and mouse, including peak file, reads density file and annotation figures. Third, it provides a comprehensive quality control metrics for each datasets, including quality control for reads level, ChIP level and annotation level. Forth, it also provides functions to analysis and visualizes these datasets; user can directly send data to our <a href="http://cistrome.org/ap/root" >Cistrome analysis pipeline</a> for subsequential analysis. Single and batch dataset visualization through UCSC and WashU genome browser are also supported.
+</div>
+
+<div>
+<h3>3. How to use Cistrome DB ? </h3>
+Detailed instruction was provided in <a href="http://cistrome.org/db/#/tutorial">tutorial</a> page. 
+</div>
+
+<div>
+<h3>4. Data analysis procedure. </h3>
+In order to keep data consistence, For each dataset, we download raw sequence data and process them with the workflow of Chilin.  Detail informatin can goes to <a href="http://cistrome.org/db/#/about">about</a> page and <a href="http://cistrome.org/chilin/">Chilin</a> (under review) document.  
+</div>
+
+<div>
+<h3> 5. Quality control metric. </h3>
+Quality control metric is another important feature in Cistrome DB, it provides 7 QC items across three different layer; In reads layer; Raw sequence median quality score was used to evaluate reads sequence quality, uniquely mapped reads can reflect mapping quality, PCR bottleneck coefficient is used to identify potential over amplification by PCR. In ChIP layer; FRiP score (fraction of non-mitochondrial reads in peak region) and high quality peaks number (10X, 20X) are list to show data quality in ChIP level. In annotation layer; Peaks proportion (in promoter, intron and intragenic region) and peaks overlapping with union DHS (union of DNase1 peaks)  are used to value annotation level QC. Based on our collected 23K datasets, we choose a cut off for each QC criterion and whether a datasets is passing that cut off is display in Cistrome DB result page. Details of quality control metric can be fond in <a href="http://cistrome.org/chilin/">Chilin</a> document. 
+</div>
+
+
+<div>
+<h3>6. Problem of (UCSC and WashU) genome browser redirection. </h3>
+Modern web browser always shut off the redirection of the web page. Cistrome Data Browser needs turn on the function for genome browser usage. User needs to allow pop-up window temporarily for this. For Safari, Click Safari -> Preferences -> Advanced -> turn off Block pop-up windows
+</div>
+
+<div>
+<h3>7. loading speed</h3>
+In order to increase loading and searching speed, we use web browser cache to store some temporary data. It may be a little bit slow when loading page first time. 
+we are still trying to figure out this issue.
+</div>
+
+<div>
+<h3>8. Cache problem for web browsers.</h3>
+When Cistrome Data browser is updated, user needs to clean up the Cache of their own web browser. For Safari, on the menu, click Safari -> Preferences -> Advanced -> Show Develop menu in menu bar, then click Develop -> Empty Caches.
+</div>
+
+</div>
+
+<div class="col-sm-1"> 
+</div>
+</div>

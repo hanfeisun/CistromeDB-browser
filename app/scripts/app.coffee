@@ -43,6 +43,9 @@ dcApp = angular.module("dcApp", [
     .when('/stat', {
         templateUrl: 'views/stat.html'
     })
+    .when('/faq', {
+        templateUrl: 'views/faq.html'
+    })
     .when('/tutorial', {
         templateUrl: 'views/tutorial.html'
     })
