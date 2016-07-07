@@ -20,7 +20,7 @@ dcApp = angular.module("dcApp", [
   localStorageServiceProvider.setPrefix('ls');
 
 .config (blockUIConfig) ->
-  blockUIConfig.autoBlock = false
+  blockUIConfig.message = 'Please Wait...'
   return
 
 .config ['ngToastProvider'

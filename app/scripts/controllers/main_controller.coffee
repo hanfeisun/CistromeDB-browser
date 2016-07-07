@@ -28,7 +28,7 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, blockUI
 
 
   $scope.items = items
-
+  
   angular.forEach $scope.items, (value, key) ->
     $scope.items[key].selected = true
 
