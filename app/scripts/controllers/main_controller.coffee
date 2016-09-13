@@ -98,6 +98,7 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, blockUI
       $scope.model.selected = false
     return
 
+
   $scope.gbSubmit = ->
     ids = []
     sps = []
@@ -184,6 +185,42 @@ dcApp.controller "filterController",
         delete $scope.batchdc[i.id]
         delete batchdc[i.id]
         $scope.showToast(4)
+
+    $scope.gbSubmit = ->
+      ids = []
+      sps = []
+      factors = []
+      angular.forEach $scope.batchdc, ((v,k)->
+        ids.push k
+        sps.push v[1]
+        factors.push v[0]
+        return
+      )
+      if ids.length > 10
+        $scope.showToast 1
+        return
+      spset = new Set sps
+      if spset.size >= 2
+        $scope.showToast 0
+        return
+      if sps[0] == 'Mus musculus'
+        sp = 'Mouse'
+      else
+        sp = 'Human'
+      conf =
+        method: "POST"
+        data:
+          ids: ids
+          species: sp
+        url: 'http://dc2.cistrome.org/api/batchview/',
+        headers:
+          'Content-Type': 'application/json'
+      blockUI.start()
+      $http(conf).success((data)->
+        blockUI.stop()
+        $window.open data.batchurl
+      ).error (data)->
+        console.log 'error'
 
     $scope.openbatch = false;
     $scope.open = (size) ->
@@ -285,6 +322,10 @@ dcApp.controller "filterController",
 
         # Update downstream fields
         $scope.datasets = msg.datasets
+        angular.forEach $scope.datasets, ((v, k) ->
+          $scope.datasets[k].selected = false
+          return
+        )
         $scope.num_pages = msg.num_pages
         $scope.request_page = msg.request_page
         $scope.current_page = msg.request_page
