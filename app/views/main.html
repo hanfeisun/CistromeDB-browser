@@ -127,20 +127,21 @@
             <div class="panel panel-default" id="result-panel">
                 <div class="panel-heading">
                     <h2>Results</h2></div>
-                <table class="table table-bordered table-hover" id="dataset-table">
+                <table class="table tablesort-sortable table-bordered table-hover" id="dataset-table" ts-wrapper>
                     <thead>
                         <tr>
                             <th>Batch</th>
-                            <th>Species</th>
-                            <th>Biological Source</th>
-                            <th>Factor</th>
-                            <th>Publication</th>
+                            <th ts-criteria="species__name">Species</th>
+                            <th ts-criteria="cell_line__name">Biological Source</th>
+                            <th ts-criteria="factor__name" ts-default>Factor</th>
+                            <th ts-criteria="paper__pub_summary" ts-default>Publication</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="dataset in datasets" ng-class="{checked: selectedInspectorRow() == $index}">
-                            <td><input ng-hide="dataset.status!='completed'" type="checkbox" ng-change="sendSelect2(datasets[$index].selected, dataset.id)" ng-model="datasets[$index].selected"/></td>
+                        <tr ng-repeat="dataset in datasets" ng-class="{checked: selectedInspectorRow() == $index}" ts-repeat>
+                            <td><input ng-hide="dataset.status!='completed'" type="checkbox" ng-change="sendSelect2(datasets[$index].selected, dataset)" ng-model="datasets[$index].selected"/></td>
+
                             <td ng-bind="dataset.species__name"  ng-click="selectInspectorRow($index); setInspector(dataset.id, dataset.species__name)"></td>
                             <td ng-bind="dataset | bioSource"  ng-click="selectInspectorRow($index); setInspector(dataset.id, dataset.species__name)"></td>
                             <td ng-bind="dataset.factor__name"  ng-click="selectInspectorRow($index); setInspector(dataset.id, dataset.species__name)"></td>
@@ -153,10 +154,13 @@
                 </table>
                 <div class="text-center form-inline" id="pagination">
 
-                    <button id="batchbrowser" href="#"  ng-click="gbSubmit()" class="btn btn-primary left-align">
-                        WashU browser <span class="glyphicon glyphicon-leaf"></span></button>
-                    <button id="batchbrowser" href="#"  ng-click="senducsc()" class="btn btn-primary left-align">
-                        UCSC browser <span class="glyphicon glyphicon-leaf"></span></button>
+                    <!-- <button id="batchbrowser" href="#"  ng-click="gbSubmit('w')" class="btn btn-primary left-align"> -->
+                    <!--     WashU browser <span class="glyphicon glyphicon-leaf"></span></button> -->
+                    <!-- <button id="batchbrowser" href="#"  ng-click="gbSubmit('u')" class="btn btn-primary left-align"> -->
+                    <!--     UCSC browser <span class="glyphicon glyphicon-leaf"></span></button> -->
+
+                    <a target="_blank" ng-href="{{browser_url}}/w/" id="genomebrowser-bw" type="button" class="btn btn-default left-align"><span class="glyphicon glyphicon-leaf">WashU Browser</span></a>
+                    <a target="_blank" ng-href="{{browser_url}}/u/" id="genomebrowser-bw" type="button" class="btn btn-default left-align">UCSC Browser</a>
 
                     <button id="prev-page-button" href="#" ng-class="{disabled: !pageCanPrev()}" ng-click="setFilter('page', current_page - 1)" class="btn btn-default top-align"><span class="glyphicon glyphicon-backward"></span> Prev
                     </button>

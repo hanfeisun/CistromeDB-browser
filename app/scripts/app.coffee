@@ -9,6 +9,7 @@ dcApp = angular.module("dcApp", [
   "ngToast"
   "ngRoute"
   "ui.bootstrap"
+  "tableSort"
   "com.2fdevs.videogular",
   "com.2fdevs.videogular.plugins.controls",
   "com.2fdevs.videogular.plugins.overlayplay",

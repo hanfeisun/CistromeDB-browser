@@ -28,7 +28,6 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, blockUI
 
 
   $scope.items = items
-  
   angular.forEach $scope.items, (value, key) ->
     $scope.items[key].selected = true
 
@@ -99,7 +98,7 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, blockUI
     return
 
 
-  $scope.gbSubmit = ->
+  $scope.gbSubmit = (gb) ->
     ids = []
     sps = []
     angular.forEach $scope.items, ((v,k)->
@@ -108,27 +107,23 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, blockUI
         sps.push v[2]
       return
     )
-
     if ids.length > 10
       $scope.showToast 1
       return
-
     spset = new Set sps
-
     if spset.size >= 2
       $scope.showToast 0
       return
-
     if sps[0] == 'Mus musculus'
       sp = 'Mouse'
     else
       sp = 'Human'
-
     conf =
       method: "POST"
       data:
         ids: ids
         species: sp
+        gb: gb
       url: 'http://dc2.cistrome.org/api/batchview/',
       headers:
         'Content-Type': 'application/json'
@@ -136,7 +131,7 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, blockUI
     blockUI.start()
     $http(conf).success((data)->
       blockUI.stop()
-      $window.open data.batchurl
+      # $window.open data.batchurl
     ).error (data)->
       console.log 'error'
 
@@ -144,7 +139,7 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, blockUI
 
 
 dcApp.controller "filterController",
-  ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast,root, root2, $uibModal, batchdc, localStorageService) ->
+  ($scope, $sce, $window, filterService, inspectorService, targetService, motifService, loginService, blockUI, similarService, ngToast,root, root2, $uibModal, batchdc, localStorageService, $http) ->
     filterSentData =
       species: "all"
       cellinfos: "all"
@@ -170,6 +165,8 @@ dcApp.controller "filterController",
         $scope.batchdc[$scope.inspector.id] = [$scope.inspector.treats[0].unique_id, $scope.inspector.treats[0].name, $scope.speciesbatch]
         batchdc[$scope.inspector.id] = [$scope.inspector.treats[0].unique_id, $scope.inspector.treats[0].name, $scope.speciesbatch]
         console.log batchdc
+        $scope.browser_url = "http://dc2.cistrome.org/api/datahub/" + batchdc.join "_" + "?type=w"
+        console.log $scope.browser_url
         $scope.showToast(3)
       else
         delete $scope.batchdc[$scope.inspector.id]
@@ -178,9 +175,23 @@ dcApp.controller "filterController",
 
     $scope.sendSelect2 = (s, i)->
       if s
-        $scope.batchdc[i.id] = [i.factors__name, i.species__name]
-        batchdc[i.id] = [i.factors__name, i.species__name]
+        $scope.batchdc[i.id] = [i.factor__name, i.species__name]
+        batchdc[i.id] = [i.factor__name, i.species__name]
         $scope.showToast(3)
+        console.log $scope.batchdc
+        console.log batchdc
+        ids = []
+        angular.forEach $scope.batchdc, ((v,k)->
+          ids.push k
+          return
+        )
+        prefix='http://dc2.cistrome.org/api/batchview'
+        if i.species__name == 'Homo sapiens'
+          $scope.browser_url = prefix + "/h" + "/" + ids.join("_")
+        else
+          $scope.browser_url = prefix + "/m" + "/" + ids.join("_")
+
+        console.log $scope.browser_url
       else
         delete $scope.batchdc[i.id]
         delete batchdc[i.id]
@@ -196,17 +207,28 @@ dcApp.controller "filterController",
         factors.push v[0]
         return
       )
+      console.log 'test'
+      console.log ids
+      console.log 'test'
+      if ids.length <= 0
+        $scope.showToast 5
+        return
       if ids.length > 10
-        $scope.showToast 1
+        $scope.showToast 7
         return
       spset = new Set sps
       if spset.size >= 2
-        $scope.showToast 0
+        $scope.showToast 6
         return
+
       if sps[0] == 'Mus musculus'
         sp = 'Mouse'
       else
         sp = 'Human'
+
+      console.log ids
+      console.log sps
+
       conf =
         method: "POST"
         data:
@@ -215,12 +237,16 @@ dcApp.controller "filterController",
         url: 'http://dc2.cistrome.org/api/batchview/',
         headers:
           'Content-Type': 'application/json'
+
       blockUI.start()
       $http(conf).success((data)->
         blockUI.stop()
         $window.open data.batchurl
+        return
       ).error (data)->
         console.log 'error'
+        return
+
 
     $scope.openbatch = false;
     $scope.open = (size) ->
@@ -352,6 +378,9 @@ dcApp.controller "filterController",
       return
 
     initialize = ->
+      batchdc = {}
+      $scope.batchdc = {}
+
       $scope.login_text = "LOGIN"
       $scope.login_url = "http://dc2.cistrome.org/api/accounts/login"
       filterAjaxUpdate filterSentData, [
@@ -506,6 +535,9 @@ dcApp.controller "filterController",
         'loading qc failure, not processed yet'
         'loading into batch view list'
         'delete one sample from batch view'
+        'empty samples'
+        'species not consistent'
+        'too many samples (10)'
       ]
       TYPE = [
         'warning'
@@ -513,6 +545,9 @@ dcApp.controller "filterController",
         'warning'
         'success'
         'success'
+        'warning'
+        'warning'
+        'warning'
       ]
       ngToast.create(
         content: content[status]
@@ -553,9 +588,6 @@ dcApp.controller "filterController",
         $scope.model.selected = false
 
       inspectorService.request(id).success((msg, status) ->
-
-
-
         $scope.inspectorHidden = false
         $scope.datasetHead = msg.treats[0]
         $scope.table = msg.qc.table
@@ -569,7 +601,6 @@ dcApp.controller "filterController",
         $scope.id = id
         $scope.targetsAll = []
         $scope.targets = []
-
 
 
         $scope.qcTable = $sce.trustAsHtml(msg.qcTable)
