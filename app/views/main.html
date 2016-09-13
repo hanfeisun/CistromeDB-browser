@@ -159,8 +159,8 @@
                     <!-- <button id="batchbrowser" href="#"  ng-click="gbSubmit('u')" class="btn btn-primary left-align"> -->
                     <!--     UCSC browser <span class="glyphicon glyphicon-leaf"></span></button> -->
 
-                    <a target="_blank" ng-href="{{browser_url}}/w/" id="genomebrowser-bw" type="button" class="btn btn-default left-align"><span class="glyphicon glyphicon-leaf">WashU Browser</span></a>
-                    <a target="_blank" ng-href="{{browser_url}}/u/" id="genomebrowser-bw" type="button" class="btn btn-default left-align">UCSC Browser</a>
+                    <a target="_blank" ng-class="{disabled: gbable}" ng-href="{{browser_url}}/w/" id="genomebrowser-bw" type="button" class="btn btn-default left-align"><span class="glyphicon glyphicon-leaf">WashU Browser</span></a>
+                    <a target="_blank" ng-class="{disabled: gbable}" ng-href="{{browser_url}}/u/" id="genomebrowser-bw" type="button" class="btn btn-default left-align">UCSC Browser</a>
 
                     <button id="prev-page-button" href="#" ng-class="{disabled: !pageCanPrev()}" ng-click="setFilter('page', current_page - 1)" class="btn btn-default top-align"><span class="glyphicon glyphicon-backward"></span> Prev
                     </button>

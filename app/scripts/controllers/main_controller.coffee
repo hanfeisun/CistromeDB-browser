@@ -165,6 +165,7 @@ dcApp.controller "filterController",
         $scope.batchdc[$scope.inspector.id] = [$scope.inspector.treats[0].unique_id, $scope.inspector.treats[0].name, $scope.speciesbatch]
         batchdc[$scope.inspector.id] = [$scope.inspector.treats[0].unique_id, $scope.inspector.treats[0].name, $scope.speciesbatch]
         console.log batchdc
+
         $scope.browser_url = "http://dc2.cistrome.org/api/datahub/" + batchdc.join "_" + "?type=w"
         console.log $scope.browser_url
         $scope.showToast(3)
@@ -181,17 +182,36 @@ dcApp.controller "filterController",
         console.log $scope.batchdc
         console.log batchdc
         ids = []
+        sps = []
+
         angular.forEach $scope.batchdc, ((v,k)->
           ids.push k
+          sps.push v[1]
           return
         )
+        if ids.length <= 0
+          $scope.showToast 5
+          $scope.gbable = true
+          return
+
+        if ids.length >= 10
+          $scope.showToast 7
+          $scope.gbable = true
+          return
+
+        spset = new Set sps
+        if spset.size >= 2
+          $scope.showToast 6
+          $scope.gbable = true
+          return
+        else:
+          $scope.gbable = false
+
         prefix='http://dc2.cistrome.org/api/batchview'
         if i.species__name == 'Homo sapiens'
           $scope.browser_url = prefix + "/h" + "/" + ids.join("_")
         else
           $scope.browser_url = prefix + "/m" + "/" + ids.join("_")
-
-        console.log $scope.browser_url
       else
         delete $scope.batchdc[i.id]
         delete batchdc[i.id]
