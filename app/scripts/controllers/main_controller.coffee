@@ -97,7 +97,6 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, blockUI
       $scope.model.selected = false
     return
 
-
   $scope.gbSubmit = (gb) ->
     ids = []
     sps = []
@@ -110,6 +109,7 @@ dcApp.controller 'ModalInstanceCtrl', ($scope, $uibModalInstance, items, blockUI
     if ids.length > 10
       $scope.showToast 1
       return
+
     spset = new Set sps
     if spset.size >= 2
       $scope.showToast 0
@@ -179,43 +179,38 @@ dcApp.controller "filterController",
         $scope.batchdc[i.id] = [i.factor__name, i.species__name]
         batchdc[i.id] = [i.factor__name, i.species__name]
         $scope.showToast(3)
-        console.log $scope.batchdc
-        console.log batchdc
-        ids = []
-        sps = []
-
-        angular.forEach $scope.batchdc, ((v,k)->
-          ids.push k
-          sps.push v[1]
-          return
-        )
-        if ids.length <= 0
-          $scope.showToast 5
-          $scope.gbable = true
-          return
-
-        if ids.length >= 10
-          $scope.showToast 7
-          $scope.gbable = true
-          return
-
-        spset = new Set sps
-        if spset.size >= 2
-          $scope.showToast 6
-          $scope.gbable = true
-          return
-        else:
-          $scope.gbable = false
-
-        prefix='http://dc2.cistrome.org/api/batchview'
-        if i.species__name == 'Homo sapiens'
-          $scope.browser_url = prefix + "/h" + "/" + ids.join("_")
-        else
-          $scope.browser_url = prefix + "/m" + "/" + ids.join("_")
       else
         delete $scope.batchdc[i.id]
         delete batchdc[i.id]
         $scope.showToast(4)
+      ids = []
+      sps = []
+      angular.forEach $scope.batchdc, ((v,k)->
+        ids.push k
+        sps.push v[1]
+        return
+      )
+      if ids.length <= 0
+        $scope.showToast 5
+        $scope.gbable = true
+        return
+      if ids.length >= 10
+        $scope.showToast 7
+        $scope.gbable = true
+        return
+      spset = new Set sps
+      if spset.size >= 2
+        $scope.showToast 6
+        $scope.gbable = true
+        return
+      else:
+        $scope.gbable = false
+      prefix='http://dc2.cistrome.org/api/batchview'
+      if i.species__name == 'Homo sapiens'
+        $scope.browser_url = prefix + "/h" + "/" + ids.join("_")
+      else
+        $scope.browser_url = prefix + "/m" + "/" + ids.join("_")
+      return
 
     $scope.gbSubmit = ->
       ids = []
