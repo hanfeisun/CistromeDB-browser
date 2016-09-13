@@ -168,10 +168,21 @@ dcApp.controller "filterController",
       if s
         $scope.batchdc[$scope.inspector.id] = [$scope.inspector.treats[0].unique_id, $scope.inspector.treats[0].name, $scope.speciesbatch]
         batchdc[$scope.inspector.id] = [$scope.inspector.treats[0].unique_id, $scope.inspector.treats[0].name, $scope.speciesbatch]
+        console.log batchdc
         $scope.showToast(3)
       else
         delete $scope.batchdc[$scope.inspector.id]
         delete batchdc[$scope.inspector.id]
+        $scope.showToast(4)
+
+    $scope.sendSelect2 = (s, i)->
+      if s
+        $scope.batchdc[i.id] = [i.factors__name, i.species__name]
+        batchdc[i.id] = [i.factors__name, i.species__name]
+        $scope.showToast(3)
+      else
+        delete $scope.batchdc[i.id]
+        delete batchdc[i.id]
         $scope.showToast(4)
 
     $scope.openbatch = false;
@@ -474,7 +485,8 @@ dcApp.controller "filterController",
 
 
     $scope.setMotifHtml = (id) ->
-      $scope.currentMotifUrl = $sce.trustAsResourceUrl(root2 + "/motif_html/" + id + "/table.html");
+      #$scope.currentMotifUrl = $sce.trustAsResourceUrl(root2 + "/motif_html/" + id + "/table.html");
+      $scope.currentMotifUrl = $sce.trustAsResourceUrl(root2 + $scope.motif_url);
       $scope.currentLogo = ""
       return
 #      $scope.currentMotifUrl = $sce.trustAsResourceUrl(root + "/motif_html/" + id + "/mdseqpos_index.html");
@@ -507,6 +519,7 @@ dcApp.controller "filterController",
         $scope.datasetHead = msg.treats[0]
         $scope.table = msg.qc.table
         $scope.inspector = msg
+        $scope.motif = msg.motif
         $scope.speciesbatch = species
 
         if $scope.inspector.qc.judge == undefined
@@ -519,6 +532,11 @@ dcApp.controller "filterController",
 
 
         $scope.qcTable = $sce.trustAsHtml(msg.qcTable)
+        $scope.motif_url = msg.motif_url
+
+        console.log $scope.motif_url
+        console.log $scope.motif
+
         $scope.mygeneSpecies = mygeneMap[$scope.datasetHead.species__name]
         $scope.washuGenome = genomeMap[$scope.datasetHead.species__name]
         $scope.ucscGenome = genomeMap[$scope.datasetHead.species__name]

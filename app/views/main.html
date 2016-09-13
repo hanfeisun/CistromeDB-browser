@@ -32,7 +32,8 @@
         </table>
         <button class="btn btn-success" ng-click="clear()">clear all</button>
         <button class="btn btn-success" ng-click="selectAll()">select/unselect all</button>
-        <button class="btn btn-success" ng-click="gbSubmit()">Submit to Genome Browser</button>
+        <button class="btn btn-success" ng-click="gbSubmit()">Submit to WashU Browser</button>
+        <button class="btn btn-success" ng-click="gbSubmit2()">Submit to UCSC Browser</button>
     </div>
     <div class="modal-footer">
         <button class="btn btn-warning" type="button" ng-click="ok()">OK</button>
@@ -134,15 +135,19 @@
                             <th>Factor</th>
                             <th>Publication</th>
                             <th>Status</th>
+                            <th>Batch selection</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="dataset in datasets" ng-class="{checked: selectedInspectorRow() == $index}" ng-click="selectInspectorRow($index); setInspector(dataset.id, dataset.species__name)">
-                            <td ng-bind="dataset.species__name"></td>
-                            <td ng-bind="dataset | bioSource"></td>
-                            <td ng-bind="dataset.factor__name"></td>
-                            <td ng-bind="dataset.paper__pub_summary"></td>
-                            <td ng-bind="dataset.status"></td>
+                        <tr ng-repeat="dataset in datasets" ng-class="{checked: selectedInspectorRow() == $index}">
+                            <td ng-bind="dataset.species__name"  ng-click="selectInspectorRow($index); setInspector(dataset.id, dataset.species__name)"></td>
+                            <td ng-bind="dataset | bioSource"  ng-click="selectInspectorRow($index); setInspector(dataset.id, dataset.species__name)"></td>
+                            <td ng-bind="dataset.factor__name"  ng-click="selectInspectorRow($index); setInspector(dataset.id, dataset.species__name)"></td>
+                            <td ng-bind="dataset.paper__pub_summary"  ng-click="selectInspectorRow($index); setInspector(dataset.id, dataset.species__name)"></td>
+                            <td ng-bind="dataset.status"  ng-click="selectInspectorRow($index); setInspector(dataset.id, dataset.species__name)"></td>
+                            <!--<span class="badge" ng-hide='inspector.qc.judge == undefined'>add to batch view list</span>
+                            <td><input ng-hide='inspector.qc.judge == undefined' type="checkbox" ng-change="sendSelect(model.selected)" ng-model="model.selected" /></td>-->
+                            <td><input ng-hide='dataset.status!='completed'' type="checkbox" ng-change="sendSelect2(model.selected, dataset.id)" ng-model="model.selected"/></td>
                         </tr>
                     </tbody>
                 </table>
@@ -159,6 +164,11 @@
                     <div class="top-align" id="num-pages" ng-bind="num_pages"></div>
                     <button id="next-page-button" href="#" ng-class="{disabled: !pageCanNext()}" ng-click="setFilter('page', current_page + 1)" class="btn btn-default top-align">
                         Next <span class="glyphicon glyphicon-forward"></span></button>
+
+                    <button id="batchbrowser" href="#"  ng-click="sendwashu()" class="btn btn-default right-align">
+                        WashU browser <span class="glyphicon glyphicon-forward"></span></button>
+                    <button id="batchbrowser" href="#"  ng-click="senducsc()" class="btn btn-default right-align">
+                        UCSC browser <span class="glyphicon glyphicon-forward"></span></button>
                 </div>
             </div>
         </div>
@@ -167,7 +177,7 @@
         <div class="col-sm-12 inspector">
             <div class="panel panel-default" id="inspector-panel">
                 <div class="panel-heading">
-                    <h2 id="inspector-header">Inspector <span ng-bind="inspector.id" ng-show="!datasetIDHidden"></span></h2>
+                    <h2 id="inspector-header">Inspector<span ng-bind="inspector.id" ng-show="!datasetIDHidden"></span></h2>
                 </div>
                 <div class="row margin-zero">
                     <div class="col-sm-9">
@@ -179,8 +189,9 @@
                                     <li ng-repeat="treat in inspector.treats">
                                         <a ng-href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{treat.unique_id}}" ng-bind="treat.name"></a>
                                     </li>
-                                    <span class="badge" ng-hide='inspector.qc.judge == undefined'>add to batch view list</span>
-                                    <input ng-hide='inspector.qc.judge == undefined' type="checkbox" ng-change="sendSelect(model.selected)" ng-model="model.selected" />
+                                    <li ng-repeat="treat in inspector.treats">
+                                        <a ng-href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{treat.unique_id}}" ng-bind="treat.unique_id"></a>
+                                    </li>
                                 </ul>
                                 <!--       <b ng-class="{hidden: inspector.conts.length==0}">Controls</b>
       <ul ng-class="{hidden: inspector.conts.length==0}">
@@ -323,7 +334,7 @@
                         <ul class="nav nav-tabs nav-justified" role="tablist" id="toolTab">
                             <li class="active"><a href="#qc-reports" class="quality-a" dc-tab>QC reports</a></li>
                             <!-- <li ng-hide="inspector.qc.judge.motif_judge=='NA'"><a href="#qc-motif" class="motif-a" ng-click="setMotifHtml(inspector.id)" dc-tab>QC motifs</a></li> -->
-                            <li ng-hide="!inspector.motif"><a href="#qc-motif" class="motif-a" ng-click="setMotifHtml(inspector.id)" dc-tab>QC motifs</a></li>
+                            <li ng-hide="!motif"><a href="#qc-motif" class="motif-a" ng-click="setMotifHtml(inspector.id)" dc-tab>QC motifs</a></li>
                             <li><a href="#allTarget" id="target-trigger" class="target-a" ng-click="setTarget('')" dc-tab>Get
     top putative targets</a></li>
                             <li><a href="#peak" class="peak-a" dc-tab>Check a putative target</a></li>
@@ -542,6 +553,6 @@
         </div>
     </div>
 </div>
-<div class="batch-open-button">
+<!-- <div class="batch-open-button">
     <i ng-class="{openbatch: openbatch, closebatch:!openbatch}" class='glyphicon glyphicon-th' ng-click="open('lg')"></i>
-</div>
+</div> -->
