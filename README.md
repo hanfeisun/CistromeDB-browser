@@ -1,10 +1,6 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is Cistrangular? ###
-
-* The Front-end of Cistrome Dataset Browser
+This is the repository of [CistromeDB](http://cistrome.org/db/) for browser-side codes.
 
 ### Install Dependencies ###
 
